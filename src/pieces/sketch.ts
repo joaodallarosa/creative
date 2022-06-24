@@ -1,5 +1,5 @@
 import { Piece } from "../classes/piece";
-import { P5I, p5i } from "p5i";
+import { p5i } from "p5i";
 import createCanvas from "../utils/create-canvas";
 
 export default new Piece("Multiverse Pots", "sketch", (sketch) => {
@@ -39,7 +39,7 @@ export default new Piece("Multiverse Pots", "sketch", (sketch) => {
     let c = color(120, 126, 120);
   };
 
-  const draw = ({ mouseX, mouseY, windowHeight }: P5I) => {
+  const draw = ({windowHeight, mouseX, mouseY}) => {
     x = x + random(-5, 5);
     // x = x + 0.5;
     y = y - 4.5;
