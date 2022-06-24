@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "start": "node .output/server/index.mjs"
+  },
+  "devDependencies": {
+    "nuxt3": "latest",
+    "tailwindcss": "^3.0.7"
+  },
+  "dependencies": {
+    "@heroicons/vue": "^1.0.5",
+    "p5": "^1.4.1",
+    "p5i": "^0.4.2"
+  }
+}
