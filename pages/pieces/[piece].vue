@@ -42,8 +42,8 @@ if (process.client) {
     piece.remove();
   });
   reset = () => {
-    window.location.reload();
-    piece;
+    piece.remove();
+    piece.mount(canvas.value);
   };
 }
 </script>
