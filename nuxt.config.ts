@@ -6,20 +6,6 @@ export default defineNuxtConfig({
   router: {
     base: '/p5-showcase/',
   },
-  // publicRuntimeConfig: {
-  //   BASE_URL: '/p5-showcase',
-  // },
-  // ssr: false,
-  // generate: {
-    // dir: 'gh_pages', // gh_pages/ instead of dist/
-    // subFolders: false // HTML files are generated according to the route path
-  // },
-  // buildDir: '.nuxt/dist',
-  // nitro: {
-  //   output: {
-  //     dir: '.nuxt/dist'
-  //   }
-  // },
   build: {
     postcss: {
       postcssOptions: {
