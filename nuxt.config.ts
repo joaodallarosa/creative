@@ -4,7 +4,10 @@ import { defineNuxtConfig } from "nuxt";
 export default defineNuxtConfig({
   target: "static",
   router: {
-    base: '/p5-showcase/'
+    base: '/p5-showcase'
+  },
+  publicRuntimeConfig: {
+    BASE_URL: '/p5-showcase',
   },
   // ssr: false,
   // generate: {
