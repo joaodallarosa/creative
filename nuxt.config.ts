@@ -4,14 +4,7 @@ import { defineNuxtConfig } from "nuxt";
 export default defineNuxtConfig({
   target: "static",
   router: {
-    base: '/',
-    extendRoutes: (routes, resolve) => {
-      routes.push({
-        name: 'custom',
-        path: '*',
-        component: resolve(__dirname, 'pages/index.vue')
-      })
-    }
+    base: '/p5-showcase/',
   },
   // publicRuntimeConfig: {
   //   BASE_URL: '/p5-showcase',
