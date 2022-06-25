@@ -4,7 +4,7 @@ import createCanvas from "../utils/create-canvas";
 import { CANVAS_SIZE } from "../configs";
 
 export default new Piece(
-  "Single Line",
+  "A Line",
   "single-line",
   (sketch) => {
     const {

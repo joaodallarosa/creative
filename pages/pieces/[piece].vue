@@ -1,36 +1,57 @@
 <template>
-  <div>
-    <NuxtLink to="/">
-      <button>Back</button>
-    </NuxtLink>
-    <h1>{{ title }}</h1>
-    <div ref="canvas"></div>
+  <div class="container mx-auto flex justify-center items-center h-screen">
+    <div class="flex flex-col">
+      <div>
+        <NuxtLink to="/">
+          <button class="px-5 py-2 hover:bg-black hover:text-white">
+            Back
+          </button>
+        </NuxtLink>
+
+        <button
+          @click="reset"
+          class="display px-5 py-2 hover:bg-black hover:text-white"
+        >
+          Reset
+        </button>
+      </div>
+      <!-- <h1>{{ title }}</h1> -->
+      <div ref="canvas"></div>
+      <div class="text-right">'Space' to start</div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
+import pieces from "../../src/pieces";
 const canvas = ref(null);
 const route = useRoute();
-let title = ''
+let title = "";
 
-if (process.client) {
-  const pieces = await import("../../src/pieces");
-  const piece = pieces.default(route.params.piece as string);
+// if (process.client) {
+  // const pieces = await import("../../src/pieces");
+  const piece = pieces(route.params.piece as string);
   const { title: pieceTitle } = piece;
-  title = pieceTitle
+  title = pieceTitle;
   onMounted(() => {
     piece.mount(canvas.value);
   });
   onUnmounted(() => {
     piece.remove();
   });
-}
+  const reset = () => {
+    window.location.reload();
+    piece;
+  };
+// }
 </script>
 
 <style>
 canvas {
-  border: 1px solid black;
+  @apply border;
+  @apply border-black;
+  /* border: 1px solid black; */
   visibility: visible !important;
 }
 </style>

@@ -3,14 +3,10 @@ import { P5I, p5i } from "p5i";
 import createCanvas from "../utils/create-canvas";
 import { CANVAS_SIZE } from "../configs";
 
-export default new Piece("test", "test", (sketch: P5I) => {
+export default new Piece("Synth", "synth", (sketch: P5I) => {
   let y = 100;
 
   const { background, random, stroke, frameRate } = sketch;
-  
-  const recolor = () => {
-    background(random(0, 955));
-  };
 
   // return {
   const setup = () => {
@@ -25,9 +21,8 @@ export default new Piece("test", "test", (sketch: P5I) => {
       y = height;
     }
     line(0, y, width, y);
-    // recolor();
   };
 
-  return { setup, draw }
+  return { setup, draw };
   // };
 });

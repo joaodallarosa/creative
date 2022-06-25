@@ -4,7 +4,7 @@ import createCanvas from "../utils/create-canvas";
 import { CANVAS_SIZE } from "../configs";
 
 export default new Piece(
-  "The Tree of Anxiety Flowers",
+  "Anxiety Tree",
   "anxiety-tree",
   (sketch) => {
     var x = 0;
