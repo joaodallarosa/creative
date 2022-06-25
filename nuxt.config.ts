@@ -7,6 +7,10 @@ export default defineNuxtConfig({
     base: '/p5-showcase/'
   },
   ssr: false,
+  generate: {
+    // dir: 'gh_pages', // gh_pages/ instead of dist/
+    subFolders: false // HTML files are generated according to the route path
+  },
   // buildDir: '.nuxt/dist',
   // nitro: {
   //   output: {
