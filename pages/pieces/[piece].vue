@@ -24,14 +24,15 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
-import pieces from "../../src/pieces";
+// import pieces from "../../src/pieces";
 const canvas = ref(null);
 const route = useRoute();
 let title = "";
+let reset
 
-// if (process.client) {
-  // const pieces = await import("../../src/pieces");
-  const piece = pieces(route.params.piece as string);
+if (process.client) {
+  const pieces = await import("../../src/pieces");
+  const piece = pieces.default(route.params.piece as string);
   const { title: pieceTitle } = piece;
   title = pieceTitle;
   onMounted(() => {
@@ -40,11 +41,11 @@ let title = "";
   onUnmounted(() => {
     piece.remove();
   });
-  const reset = () => {
+  reset = () => {
     window.location.reload();
     piece;
   };
-// }
+}
 </script>
 
 <style>
