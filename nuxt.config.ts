@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   router: {
     base: '/p5-showcase/'
   },
-  ssr: false,
+  // ssr: false,
   generate: {
     // dir: 'gh_pages', // gh_pages/ instead of dist/
     subFolders: false // HTML files are generated according to the route path
