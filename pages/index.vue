@@ -19,7 +19,7 @@ const canvas = ref(null);
 let list = []
 
 if (process.client) {
-  const {pieces} = await import("/src/pieces");
+  const {pieces} = await import("~~/src/pieces");
   console.log('PIECES', pieces)
   list = pieces
   onMounted(() => {
