@@ -2,8 +2,8 @@
   NODE_VERSION = "16.15.1"
 
 [build]
-  publish = ".output"
-  command = "npm run build"
+  publish = ".output/public"
+  command = "npm run generate"
 
 [[redirects]]
   from = "/*"
