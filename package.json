@@ -1,12 +1,15 @@
 {
   "private": true,
   "scripts": {
-    "dev": "nuxi dev",
-    "build": "nuxi build",
-    "start": "node .output/server/index.mjs"
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "deploy": "nuxt generate && push-dir --dir=dist --branch=master --cleanup"
   },
   "devDependencies": {
-    "nuxt3": "latest",
+    "nuxt": "npm:nuxt3@latest",
+    "push-dir": "^0.4.1",
     "tailwindcss": "^3.0.7"
   },
   "dependencies": {
