@@ -6,6 +6,9 @@ export default defineNuxtConfig({
   router: {
     base: '/p5-showcase/',
   },
+  app: {
+    baseURL: '/p5-showcase/'
+  },
   build: {
     postcss: {
       postcssOptions: {
