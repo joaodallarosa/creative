@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     base: '/p5-showcase/'
   },
   // buildDir: '.nuxt/dist',
-  // ssr: false,
+  ssr: false,
   // nitro: {
   //   output: {
   //     dir: '.nuxt/dist'
