@@ -23,7 +23,7 @@ export default new Piece("Only Lines", "only-lines", (sketch: P5I) => {
   // const LINE_SPACING = 5
 
   const preload = () => {
-    img = loadImage("/assets/images/dua.jpeg");
+    img = loadImage(`/p5-showcase/assets/images/dua.jpeg`);
   }
 
   const setup = ({windowWidth, windowHeight}) => {
