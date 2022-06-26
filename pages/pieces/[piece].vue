@@ -16,7 +16,7 @@
         </button>
       </div>
       <!-- <h1>{{ title }}</h1> -->
-      <div ref="canvas"></div>
+      <div class="w-[700px] h-[700px] border-black border" ref="canvas"></div>
       <div class="text-right">'Space' to start</div>
     </div>
   </div>

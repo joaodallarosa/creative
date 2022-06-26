@@ -1,18 +1,26 @@
 <template>
   <div class="container mx-auto flex justify-center items-center h-screen">
     <!-- <h1 class="font-bold text-gray-600 text-lg">Stuff</h1> -->
-    <div :class="`border-black border p-5 h-[${CANVAS_SIZE}px] w-[${CANVAS_SIZE}px]`">
-      <ul
-        class="grid grid-cols-2 gap-5 "
+
+    <div class="flex flex-col">
+      <div
+        :class="`border-black border p-5`"
       >
-        <li class="inline-block hover:bg-black hover:text-white" v-for="piece in list" :key="piece.url">
-          <NuxtLink :to="`/pieces/${piece.url}`">
-            <button>
-              {{ piece.title }}
-            </button>
-          </NuxtLink>
-        </li>
-      </ul>
+        <ul class="grid grid-cols-2 gap-x-10 gap-y-5">
+          <li
+            class="inline-block hover:bg-black hover:text-white"
+            v-for="piece in list"
+            :key="piece.url"
+          >
+            <NuxtLink :to="`/pieces/${piece.url}`">
+              <button class="lowercase">
+                {{ piece.title }}
+              </button>
+            </NuxtLink>
+          </li>
+        </ul>
+      </div>
+      <div class="text-right">João Dalla Rosa</div>
     </div>
   </div>
 </template>
