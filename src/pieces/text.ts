@@ -19,7 +19,7 @@ export default new Piece("Not Art", "not-art", (sketch: P5I) => {
   let font;
   const FONT_SIZE = 200;
   const preload = () => {
-    font = loadFont("/p5-showcase/assets/fonts/flicker.otf");
+    font = loadFont("/assets/fonts/flicker.otf");
   };
 
   function setup() {
