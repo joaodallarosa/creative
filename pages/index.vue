@@ -20,7 +20,6 @@
           </li>
         </ul>
       </div>
-      <div class="text-right">João Dalla Rosa</div>
     </div>
   </div>
 </template>
