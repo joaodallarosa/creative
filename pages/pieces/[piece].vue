@@ -24,7 +24,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
-// import pieces from "../../src/pieces";
 const canvas = ref(null);
 const route = useRoute();
 let title = "";
