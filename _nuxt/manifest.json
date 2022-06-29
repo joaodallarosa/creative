@@ -1,19 +1,37 @@
 {
   "node_modules/nuxt/dist/app/entry.mjs": {
-    "file": "entry-df16d9bc.mjs",
+    "file": "entry-d661bbfe.mjs",
     "src": "node_modules/nuxt/dist/app/entry.mjs",
     "isEntry": true,
     "dynamicImports": [
       "src/pieces/index.ts",
+      "pages/fragment/index.vue",
       "pages/index.vue",
-      "pages/pieces/[piece].vue"
+      "pages/pieces/[piece].vue",
+      "pages/three/index.vue"
     ],
     "css": [
       "entry.1462cd4a.css"
     ]
   },
+  "pages/fragment/index.vue": {
+    "file": "index-5ae68533.mjs",
+    "src": "pages/fragment/index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "node_modules/nuxt/dist/app/entry.mjs",
+      "_index-e84d933f.mjs",
+      "_toMelt-bb216888.mjs"
+    ]
+  },
+  "_index-e84d933f.mjs": {
+    "file": "index-e84d933f.mjs"
+  },
+  "_toMelt-bb216888.mjs": {
+    "file": "toMelt-bb216888.mjs"
+  },
   "pages/index.vue": {
-    "file": "index-9ddc55f6.mjs",
+    "file": "index-d606096f.mjs",
     "src": "pages/index.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -24,7 +42,7 @@
     ]
   },
   "pages/pieces/[piece].vue": {
-    "file": "_piece_-cccbbc11.mjs",
+    "file": "_piece_-3247f2d7.mjs",
     "src": "pages/pieces/[piece].vue",
     "isDynamicEntry": true,
     "imports": [
@@ -34,9 +52,22 @@
       "src/pieces/index.ts"
     ]
   },
+  "pages/three/index.vue": {
+    "file": "index-075863a1.mjs",
+    "src": "pages/three/index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "node_modules/nuxt/dist/app/entry.mjs",
+      "_index-e84d933f.mjs",
+      "_toMelt-bb216888.mjs"
+    ]
+  },
   "src/pieces/index.ts": {
-    "file": "index-ef5ded16.mjs",
+    "file": "index-7ebd29a5.mjs",
     "src": "src/pieces/index.ts",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-e84d933f.mjs"
+    ]
   }
 }
