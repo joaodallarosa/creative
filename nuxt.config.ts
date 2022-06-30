@@ -33,7 +33,6 @@ export default defineNuxtConfig({
     prerender: {
       routes: [
         "/",
-        "/three",
         "/fragment",
         "/pieces/not-art",
         "/pieces/sketch",
