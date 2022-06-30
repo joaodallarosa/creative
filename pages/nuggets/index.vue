@@ -25,7 +25,7 @@
           <div class="cube__face cube__face--left" ref="left"></div>
           <div class="cube__face cube__face--bottom" ref="bottom"></div>
           <div class="cube__face cube__face--top" ref="top">
-            <img src="/images/pollos.png" />
+            <img src="/p5-showcase/images/pollos.png" />
           </div>
           <div class="cube__face cube__face--inside">
             THIS WAS MADE ONLY WITH CSS
