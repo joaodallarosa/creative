@@ -3,7 +3,7 @@ import { defineNuxtConfig } from "nuxt";
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
   target: "static",
-  ssr: false,
+  // ssr: false,
   // router: {
   //   base: "/p5-showcase/",
   // },
@@ -29,19 +29,19 @@ export default defineNuxtConfig({
     },
   },
   css: ["~/assets/css/tailwind.css"],
-  // nitro: {
-  //   prerender: {
-  //     routes: [
-  //       "/",
-  //       "/fragment",
-  //       "/pieces/not-art",
-  //       "/pieces/sketch",
-  //       "/pieces/single-line",
-  //       "/pieces/anxiety-tree",
-  //       "/pieces/synth",
-  //       "/pieces/only-lines",
-  //       "/pieces/boyhood",
-  //     ],
-  //   },
-  // },
+  nitro: {
+    prerender: {
+      routes: [
+        "/",
+        "/fragment",
+        "/pieces/not-art",
+        "/pieces/sketch",
+        "/pieces/single-line",
+        "/pieces/anxiety-tree",
+        "/pieces/synth",
+        "/pieces/only-lines",
+        "/pieces/boyhood",
+      ],
+    },
+  },
 });
