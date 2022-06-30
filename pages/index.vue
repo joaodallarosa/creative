@@ -3,9 +3,7 @@
     <!-- <h1 class="font-bold text-gray-600 text-lg">Stuff</h1> -->
 
     <div class="flex flex-col">
-      <div
-        :class="`border-black border p-5`"
-      >
+      <div :class="`border-black border p-5`">
         <ul class="grid grid-cols-2 gap-x-10 gap-y-5">
           <li
             class="inline-block hover:bg-black hover:text-white"
@@ -15,6 +13,20 @@
             <NuxtLink :to="`/pieces/${piece.url}`">
               <button class="lowercase">
                 {{ piece.title }}
+              </button>
+            </NuxtLink>
+          </li>
+          <li class="inline-block hover:bg-black hover:text-white">
+            <NuxtLink :to="`/three`">
+              <button class="lowercase">
+                confidence
+              </button>
+            </NuxtLink>
+          </li>
+          <li class="inline-block hover:bg-black hover:text-white">
+            <NuxtLink :to="`/fragment`">
+              <button class="lowercase">
+                fragment
               </button>
             </NuxtLink>
           </li>

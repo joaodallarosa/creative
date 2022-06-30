@@ -39,7 +39,7 @@ if (process.client) {
     // load a SVG resource
     loader.load(
       // resource URL
-      "/images/fragment.svg",
+      "/p5-showcase/images/fragment.svg",
       // called when the resource is loaded
       function (data) {
         const paths = data.paths;

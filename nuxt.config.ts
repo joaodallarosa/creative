@@ -32,9 +32,15 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       routes: [
+        "/",
         "/three",
         "/fragment",
         "/pieces/not-art",
+        "/pieces/sketch",
+        "/pieces/single-line",
+        "/pieces/anxiety-tree",
+        "/pieces/synth",
+        "/pieces/only-lines",
         "/pieces/boyhood",
       ],
     },
