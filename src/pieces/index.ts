@@ -7,9 +7,9 @@ import notArt from './p5/text';
 import onlyLines from './p5/dots';
 
 import confidence from "./three/confidence";
+import fragment from "./three/fragment";
 
-
-export const pieces = [sketch, singleLine, anxietyTree, childhood, test, notArt, onlyLines, confidence];
+export const pieces = [sketch, singleLine, anxietyTree, childhood, test, notArt, onlyLines, confidence, fragment];
 
 export default (name: string) => {
   return pieces.find((piece) => piece.url === name);
