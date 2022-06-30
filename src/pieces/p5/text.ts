@@ -17,7 +17,7 @@ export default new Piece("Not Art", "not-art", (sketch: P5I) => {
   } = sketch;
 
   let font;
-  const FONT_SIZE = 200;
+  const FONT_SIZE = 350;
   const preload = () => {
     font = loadFont("/p5-showcase/fonts/flicker.otf");
   };
@@ -26,13 +26,13 @@ export default new Piece("Not Art", "not-art", (sketch: P5I) => {
     createCanvas(sketch);
     background(1000);
 
-    renderLetter("N", -20, 0, "art");
-    renderLetter("O", 140, 0, "art");
-    renderLetter("T", 300, 0, "art");
+    renderLetter("N", -30, 0, "art");
+    renderLetter("O", 200, 0, "art");
+    renderLetter("T", 450, 0, "art");
 
-    renderLetter("A", -20, 200, "not");
-    renderLetter("R", 140, 200, "not");
-    renderLetter("T", 300, 200, "not");
+    renderLetter("A", -20, 300, "not");
+    renderLetter("R", 200, 300, "not");
+    renderLetter("T", 450, 300, "not");
   }
 
   const renderLetter = (letter, x, y, fillText) => {
@@ -41,8 +41,8 @@ export default new Piece("Not Art", "not-art", (sketch: P5I) => {
     textCnv.fill(0);
     textCnv.textFont(font);
     // textCnv.textLeading(random(6,44));
-    for (let i = 0; i < 400; i++) {
-      textCnv.textSize(random(4, 15));
+    for (let i = 0; i < 480; i++) {
+      textCnv.textSize(random(4, 25));
       textCnv.push();
       textCnv.translate(random(0, textCnv.width), random(0, textCnv.height));
       // textCnv.rotate(random(-PI,PI));
