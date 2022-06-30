@@ -22,18 +22,13 @@
 
 <script setup lang="ts">
 import { onMounted } from "vue";
-import { CANVAS_SIZE } from "~/src/configs";
-// import { pieces } from '~/src/pieces';
 const canvas = ref(null);
 let list = [];
 let threeList = [];
 
 if (process.client) {
   const { pieces } = await import("~~/src/pieces");
-  // const { pieces: threePieces } = await import("~~/src/pieces/three");
-  // console.log("PIECES", threePieces);
   list = pieces;
-  // threeList = threePieces;
   onMounted(() => {
     console.log(window.innerWidth, window.innerHeight);
   });

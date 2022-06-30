@@ -1,5 +1,4 @@
 import { Piece } from "../../classes/piece";
-import { p5i } from "p5i";
 import createCanvas from "../../utils/create-canvas";
 
 export default new Piece("Multiverse Pots", "sketch", (sketch) => {
