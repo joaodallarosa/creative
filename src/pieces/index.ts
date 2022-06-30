@@ -1,12 +1,15 @@
-import sketch from "./sketch";
-import singleLine from "./single-line";
-import anxietyTree from "./anxiety-tree";
-import childhood from "./childhood";
-import test from "./test";
-import notArt from './text';
-import onlyLines from './dots';
+import sketch from "./p5/sketch";
+import singleLine from "./p5/single-line";
+import anxietyTree from "./p5/anxiety-tree";
+import childhood from "./p5/childhood";
+import test from "./p5/test";
+import notArt from './p5/text';
+import onlyLines from './p5/dots';
 
-export const pieces = [sketch, singleLine, anxietyTree, childhood, test, notArt, onlyLines];
+import confidence from "./three/confidence";
+
+
+export const pieces = [sketch, singleLine, anxietyTree, childhood, test, notArt, onlyLines, confidence];
 
 export default (name: string) => {
   return pieces.find((piece) => piece.url === name);

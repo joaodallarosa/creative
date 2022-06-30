@@ -1,6 +1,6 @@
-import { Piece } from "../classes/piece";
+import { Piece } from "../../classes/piece";
 import { P5I, p5i } from "p5i";
-import createCanvas from "../utils/create-canvas";
+import createCanvas from "../../utils/create-canvas";
 import { Image } from "p5";
 // import { CANVAS_SIZE } from "../configs";
 

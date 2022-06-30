@@ -1,7 +1,5 @@
 <template>
   <div class="container mx-auto flex justify-center items-center h-screen">
-    <!-- <h1 class="font-bold text-gray-600 text-lg">Stuff</h1> -->
-
     <div class="flex flex-col">
       <div :class="`border-black border p-5`">
         <ul class="grid grid-cols-2 gap-x-10 gap-y-5">
@@ -16,20 +14,6 @@
               </button>
             </NuxtLink>
           </li>
-          <li class="inline-block hover:bg-black hover:text-white">
-            <NuxtLink :to="`/three`">
-              <button class="lowercase">
-                confidence
-              </button>
-            </NuxtLink>
-          </li>
-          <li class="inline-block hover:bg-black hover:text-white">
-            <NuxtLink :to="`/fragment`">
-              <button class="lowercase">
-                fragment
-              </button>
-            </NuxtLink>
-          </li>
         </ul>
       </div>
     </div>
@@ -39,13 +23,17 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { CANVAS_SIZE } from "~/src/configs";
+import { pieces } from '~/src/pieces';
 const canvas = ref(null);
 let list = [];
+let threeList = [];
 
 if (process.client) {
-  const { pieces } = await import("~~/src/pieces");
-  console.log("PIECES", pieces);
+  // const { pieces } = await import("~~/src/pieces");
+  // const { pieces: threePieces } = await import("~~/src/pieces/three");
+  // console.log("PIECES", threePieces);
   list = pieces;
+  // threeList = threePieces;
   onMounted(() => {
     console.log(window.innerWidth, window.innerHeight);
   });

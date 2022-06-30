@@ -27,10 +27,11 @@ import { ref, onMounted, onUnmounted } from "vue";
 const canvas = ref(null);
 const route = useRoute();
 let title = "";
-let reset
+let reset;
 
 if (process.client) {
-  const pieces = await import("../../src/pieces");
+  //Adapt to see if it's a p5 or threejs piece
+  const pieces = await import("~/src/pieces");
   const piece = pieces.default(route.params.piece as string);
   const { title: pieceTitle } = piece;
   title = pieceTitle;
@@ -38,10 +39,10 @@ if (process.client) {
     piece.mount(canvas.value);
   });
   onUnmounted(() => {
-    piece.remove();
+    piece.remove(canvas.value);
   });
   reset = () => {
-    piece.remove();
+    piece.remove(canvas.value);
     piece.mount(canvas.value);
   };
 }

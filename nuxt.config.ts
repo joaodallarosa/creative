@@ -3,7 +3,7 @@ import { defineNuxtConfig } from "nuxt";
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
   target: "static",
-  // ssr: false,
+  ssr: false,
   // router: {
   //   base: "/p5-showcase/",
   // },

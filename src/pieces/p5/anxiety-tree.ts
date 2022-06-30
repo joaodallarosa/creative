@@ -1,7 +1,7 @@
-import { Piece } from "../classes/piece";
+import { Piece } from "../../classes/piece";
 import { P5I, p5i } from "p5i";
-import createCanvas from "../utils/create-canvas";
-import { CANVAS_SIZE } from "../configs";
+import createCanvas from "../../utils/create-canvas";
+import { CANVAS_SIZE } from "../../configs";
 
 export default new Piece(
   "Anxiety Tree",
