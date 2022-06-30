@@ -14,6 +14,15 @@
               </button>
             </NuxtLink>
           </li>
+          <li
+            class="inline-block hover:bg-black hover:text-white"
+          >
+            <NuxtLink to="/nuggets">
+              <button class="lowercase">
+                what's in the box?
+              </button>
+            </NuxtLink>
+          </li>
         </ul>
       </div>
     </div>
