@@ -41,6 +41,7 @@ export default defineNuxtConfig({
         "/pieces/synth",
         "/pieces/only-lines",
         "/pieces/boyhood",
+        "/pieces/confidence",
       ],
     },
   },
