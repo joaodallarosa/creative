@@ -29,19 +29,19 @@ export default defineNuxtConfig({
     },
   },
   css: ["~/assets/css/tailwind.css"],
-  nitro: {
-    prerender: {
-      routes: [
-        "/",
-        "/fragment",
-        "/pieces/not-art",
-        "/pieces/sketch",
-        "/pieces/single-line",
-        "/pieces/anxiety-tree",
-        "/pieces/synth",
-        "/pieces/only-lines",
-        "/pieces/boyhood",
-      ],
-    },
-  },
+  // nitro: {
+  //   prerender: {
+  //     routes: [
+  //       "/",
+  //       "/fragment",
+  //       "/pieces/not-art",
+  //       "/pieces/sketch",
+  //       "/pieces/single-line",
+  //       "/pieces/anxiety-tree",
+  //       "/pieces/synth",
+  //       "/pieces/only-lines",
+  //       "/pieces/boyhood",
+  //     ],
+  //   },
+  // },
 });

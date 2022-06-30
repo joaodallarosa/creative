@@ -7,29 +7,47 @@ export default class ToMelt {
   groupCounter = 1;
   dripCounter = 0;
   speed = 0.015;
-  constructor(obj: THREE.Mesh) {
+  speedIncrease = 0;
+  dripsPerSec = 1;
+  groupIncrease = 0;
+  startGroupingAt = 0;
+  frame = 0;
+  constructor(obj: THREE.Mesh, options: ToMeltOptions) {
     this.obj = obj;
     const numbers = Array.from(
       Array(this.obj.geometry.attributes.position.array.length).keys()
     );
     this.yPoints = numbers.filter((n) => n % 3 === 1);
+
+    const {
+      speed,
+      speedIncrease,
+      dripsPerSec,
+      groupIncrease,
+      startGroupingAt,
+    } = options;
+    this.speed = speed;
+    this.speedIncrease = speedIncrease;
+    this.dripsPerSec = dripsPerSec;
+    this.groupIncrease = groupIncrease;
+    this.startGroupingAt = startGroupingAt;
   }
-  addVerticeToMelt = () => {
-    const n = Math.floor(Math.random() * this.yPoints.length);
-    this.toMove.push(this.yPoints.splice(n, 1));
+  addVerticeToMelt = (n: number) => {
+    const at = Math.floor(Math.random() * this.yPoints.length);
+    for (let i = 0; i < Math.floor(n); i++) {
+      this.toMove.push(this.yPoints.splice(at, 1));
+    }
   };
 
   move = () => {
-    this.speed += 0.06;
-    this.dripCounter += 10;
+    this.frame++;
+    this.speed += this.speedIncrease;
+    this.dripCounter += this.dripsPerSec;
 
-    if (this.dripCounter >= 100) {
-      for (let i = 0; i < this.groupCounter; i++) {
-        this.addVerticeToMelt();
-      }
-      this.groupCounter += 0.002;
-      if (this.speed >= 15) {
-        this.groupCounter += 8;
+    if (this.dripCounter >= 60) {
+      this.addVerticeToMelt(this.groupCounter);
+      if (this.frame / 60 >= this.startGroupingAt) {
+        this.groupCounter += this.groupIncrease;
       }
       this.dripCounter = 0;
     }
@@ -40,4 +58,12 @@ export default class ToMelt {
 
     this.obj.geometry.attributes.position.needsUpdate = true;
   };
+}
+
+export interface ToMeltOptions {
+  speed: number;
+  speedIncrease: number;
+  dripsPerSec: number;
+  groupIncrease: number;
+  startGroupingAt: number;
 }

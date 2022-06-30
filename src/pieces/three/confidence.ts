@@ -1,14 +1,17 @@
 import { ThreePiece } from "../../classes/threePiece";
 import * as THREE from "three";
 import ToMelt from "~/src/classes/toMelt";
-
-// import { P5I, p5i } from "p5i";
-// import createCanvas from "../utils/create-canvas";
-// import { Image } from "p5";
 import { CANVAS_SIZE } from "../../configs";
 
 export default new ThreePiece("Confidence :)", "confidence", (element) => {
   let meltObjs = [];
+  const meltOption = {
+    speed: 0.2,
+    speedIncrease: 0.005,
+    dripsPerSec: 5,
+    groupIncrease: 0.8,
+    startGroupingAt: 3,
+  };
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xffffff);
@@ -18,7 +21,7 @@ export default new ThreePiece("Confidence :)", "confidence", (element) => {
   console.log("ASMON", element);
   element.appendChild(renderer.domElement);
 
-  const geometry = new THREE.SphereGeometry(32, 32, 32);
+  const geometry = new THREE.SphereGeometry(22, 22, 22);
   const material = new THREE.MeshToonMaterial({
     color: "black",
     // flatShading: true,
@@ -51,8 +54,8 @@ export default new ThreePiece("Confidence :)", "confidence", (element) => {
 
   camera.position.z = 220;
   let l = 0.015;
-  meltObjs.push(new ToMelt(shape));
-  meltObjs.push(new ToMelt(shape2));
+  meltObjs.push(new ToMelt(shape, meltOption));
+  meltObjs.push(new ToMelt(shape2, meltOption));
 
   let jest = 0;
   let reqAnim;
@@ -60,7 +63,7 @@ export default new ThreePiece("Confidence :)", "confidence", (element) => {
     reqAnim = requestAnimationFrame(animate);
     jest++;
     if (jest >= 300) {
-      meltObjs.push(new ToMelt(torus));
+      meltObjs.push(new ToMelt(torus, meltOption));
     }
     meltObjs.forEach((obj) => {
       obj.move();
