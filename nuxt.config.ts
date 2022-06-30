@@ -4,11 +4,11 @@ import { defineNuxtConfig } from "nuxt";
 export default defineNuxtConfig({
   target: "static",
   // ssr: false,
-  router: {
-    base: "/p5-showcase/",
-  },
+  // router: {
+  //   base: "/p5-showcase/",
+  // },
   generate: {
-    subFolders: false,
+    subFolders: true,
   },
   app: {
     baseURL: "/p5-showcase/",
@@ -32,10 +32,10 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       routes: [
-        "/p5-showcase/three",
-        "/p5-showcase/fragment",
-        "/p5-showcase/pieces/not-art",
-        "/p5-showcase/pieces/boyhood",
+        "/three",
+        "/fragment",
+        "/pieces/not-art",
+        "/pieces/boyhood",
       ],
     },
   },
