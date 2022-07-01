@@ -36,34 +36,41 @@
           <div class="cube__face cube__face--rigt-label"></div>
         </div>
       </div>
-      <p class="radio-group" ref="radio">
-        <label>
-          <input type="radio" name="rotate-cube-side" value="front" ref="frontCheck" checked />
-          front
-        </label>
-        <label>
-          <input type="radio" name="rotate-cube-side" value="right" /> right
-        </label>
-        <label>
-          <input type="radio" name="rotate-cube-side" value="back" /> back
-        </label>
-        <label>
-          <input type="radio" name="rotate-cube-side" value="left" /> left
-        </label>
-        <label>
-          <input type="radio" name="rotate-cube-side" value="top" /> top
-        </label>
-        <label>
-          <input type="radio" name="rotate-cube-side" value="bottom" /> bottom
-        </label>
-
+      <div class="flex">
+        <p class="radio-group" ref="radio">
+          <label>
+            <input
+              type="radio"
+              name="rotate-cube-side"
+              value="front"
+              ref="frontCheck"
+              checked
+            />
+            front
+          </label>
+          <label>
+            <input type="radio" name="rotate-cube-side" value="right" /> right
+          </label>
+          <label>
+            <input type="radio" name="rotate-cube-side" value="back" /> back
+          </label>
+          <label>
+            <input type="radio" name="rotate-cube-side" value="left" /> left
+          </label>
+          <label>
+            <input type="radio" name="rotate-cube-side" value="top" /> top
+          </label>
+          <label>
+            <input type="radio" name="rotate-cube-side" value="bottom" /> bottom
+          </label>
+        </p>
         <button
-          class="px-5 py-2 hover:bg-black hover:text-white"
+          class="px-5 py-2 hover:bg-black hover:text-white ml-auto"
           @click="openBox"
         >
           Open the Box!
         </button>
-      </p>
+      </div>
     </div>
   </div>
 </template>
@@ -183,6 +190,41 @@ if (process.client) {
 </script>
 
 <style>
+.radio-group label {
+  display: inline-block;
+  padding: 2px 5px;
+}
+
+.radio-group label:hover {
+  text-decoration: underline;
+}
+
+input[type="radio"]:after {
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  top: -2px;
+  left: -1px;
+  position: relative;
+  content: "";
+  display: inline-block;
+  visibility: visible;
+  border: none;
+}
+
+input[type="radio"]:checked:after {
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+  top: -2px;
+  left: -1px;
+  position: relative;
+  background-color: black;
+  content: "";
+  display: inline-block;
+  visibility: visible;
+  border: none;
+}
 * {
   box-sizing: border-box;
 }
