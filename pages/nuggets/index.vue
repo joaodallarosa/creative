@@ -38,7 +38,7 @@
       </div>
       <p class="radio-group" ref="radio">
         <label>
-          <input type="radio" name="rotate-cube-side" value="front" checked />
+          <input type="radio" name="rotate-cube-side" value="front" ref="frontCheck" checked />
           front
         </label>
         <label>
@@ -80,13 +80,20 @@ var bottom = ref(null);
 var left = ref(null);
 var front = ref(null);
 var back = ref(null);
+var frontCheck = ref(null);
 
 const BOX_WIDTH = 700;
 const BOX_HEIGHT = 180;
 const BOX_DEPTH = 500;
+var currentClass = "";
 
 if (process.client) {
   openBox = () => {
+    frontCheck.value.checked = true;
+    if (currentClass) {
+      cubeRef.value.classList.remove(currentClass);
+    }
+    cubeRef.value.classList.add("show-front");
     const topEl = top.value;
     topEl.classList.add("cube__face--top--opened");
     topEl.style.transform = `translateZ(${
@@ -100,10 +107,8 @@ if (process.client) {
   onMounted(() => {
     var cube = cubeRef.value;
     var radioGroup = radio.value;
-    var currentClass = "";
 
     const changeSide = () => {
-      // if (!radioGroup) return;
       var checkedRadio = radioGroup.querySelector(":checked");
       var showClass = "show-" + checkedRadio.value;
       if (currentClass) {
