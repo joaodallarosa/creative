@@ -25,7 +25,9 @@
           <div class="cube__face cube__face--left" ref="left"></div>
           <div class="cube__face cube__face--bottom" ref="bottom"></div>
           <div class="cube__face cube__face--top" ref="top">
-            <img src="/p5-showcase/images/pollos.png" />
+            <img
+              src="https://upload.wikimedia.org/wikipedia/en/a/ae/Los_Pollos_Hermanos_logo.png"
+            />
           </div>
           <div class="cube__face cube__face--inside">
             THIS WAS MADE ONLY WITH CSS
@@ -90,6 +92,10 @@ if (process.client) {
     topEl.style.transform = `translateZ(${
       -BOX_DEPTH / 2
     }px) translateY(0px) rotateX(120deg)`;
+  };
+
+  reset = () => {
+    window.location.reload();
   };
   onMounted(() => {
     var cube = cubeRef.value;
@@ -164,10 +170,6 @@ if (process.client) {
       }px) translateY(0px) rotateX( 90deg)`;
     };
 
-    reset = () => {
-      window.location.reload();
-    };
-
     radioGroup.addEventListener("change", changeSide);
     createBox(BOX_WIDTH, BOX_HEIGHT, BOX_DEPTH);
     cubeRef.value.style.display = "block";
@@ -201,7 +203,7 @@ body {
 }
 
 .cube.show-front {
-  transform: translateZ(-300px) rotateY(20deg) translateY(300px) rotateX(-20deg);
+  transform: translateZ(-300px) rotateY(30deg) translateY(300px) rotateX(-30deg);
 }
 .cube.show-right {
   transform: translateZ(-800px) rotateY(-60deg) translateY(300px)
