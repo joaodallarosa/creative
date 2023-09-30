@@ -27,7 +27,7 @@ export default new ThreePiece("Fragment", "fragment", (element) => {
   // load a SVG resource
   loader.load(
     // resource URL
-    "/p5-showcase/images/fragment.svg",
+    "/creative/images/fragment.svg",
     // called when the resource is loaded
     function (data) {
       const paths = data.paths;

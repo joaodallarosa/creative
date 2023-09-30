@@ -5,13 +5,13 @@ export default defineNuxtConfig({
   target: "static",
   // ssr: false,
   // router: {
-  //   base: "/p5-showcase/",
+  //   base: "/creative/",
   // },
   generate: {
     subFolders: true,
   },
   app: {
-    baseURL: "/p5-showcase/",
+    baseURL: "/creative/",
   },
   build: {
     postcss: {

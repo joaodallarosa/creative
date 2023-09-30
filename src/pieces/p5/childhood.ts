@@ -44,7 +44,6 @@ export default new Piece("Boyhood", "boyhood", (sketch) => {
       for (let i = 0; i < SPEED; i++) {
         JOAO.drawStep();
       }
-      // go = false
     }
   };
 
