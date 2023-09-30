@@ -253,5 +253,7 @@ export default new Piece(
 
     // return mount(element, { setup, draw, keyPressed });
     return { setup, draw, keyPressed };
-  }
+  },
+  "",
+  "'Space' to start."
 );

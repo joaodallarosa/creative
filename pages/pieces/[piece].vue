@@ -11,16 +11,15 @@
         <button
           tabindex="-1"
           @click="reset"
-          class="display px-5 py-2 hover:bg-black hover:text-white select-none focus:bg-red"
+          class="display px-5 py-2 hover:bg-black hover:text-white select-none"
         >
           Reset
         </button>
       </div>
-      <!-- <h1>{{ title }}</h1> -->
       <div class="w-[700px] h-[700px]" ref="canvas"></div>
-      <div class="text-right select-none">{{instructions}}</div>
+      <div class="text-right select-none" v-html="instructions"/>
       <div class="select-none">{{title}}</div>
-      <div class="select-none">{{description}}</div>
+      <span class="select-none" v-html="description"/>
 
     </div>
   </div>

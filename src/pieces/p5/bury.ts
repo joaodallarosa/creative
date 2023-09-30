@@ -255,5 +255,5 @@ export default new Piece(
     return { setup, draw, mousePressed, keyPressed, preload };
   },
   "Description of Bury...",
-  "'Click' to interact. Type for custom word."
+  "'Click' to interact. <br>You can also type in your own words."
 );

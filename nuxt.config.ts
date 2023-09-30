@@ -3,7 +3,7 @@ import { defineNuxtConfig } from "nuxt";
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
   target: "static",
-  // ssr: false,
+  ssr: false,
   // router: {
   //   base: "/creative/",
   // },
@@ -43,6 +43,7 @@ export default defineNuxtConfig({
         "/pieces/boyhood",
         "/pieces/confidence",
         "/pieces/fragment",
+        "/pieces/bury",
       ],
     },
   },
