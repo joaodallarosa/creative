@@ -1,6 +1,6 @@
 <template>
-  <div class="container mx-auto flex justify-center items-center h-screen">
-    <div class="flex flex-col">
+  <div class="container mx-auto flex justify-center items-center h-screen w-full">
+    <div class="flex flex-col max-w-full">
       <div>
         <NuxtLink to="/">
           <button class="px-5 py-2 hover:bg-black hover:text-white select-none">
@@ -16,7 +16,7 @@
           Reset
         </button>
       </div>
-      <div class="w-[700px] h-[700px]" ref="canvas"></div>
+      <div class="w-[700px] h-[700px] max-w-full" ref="canvas"></div>
       <div class="text-right select-none" v-html="instructions"/>
       <div class="select-none">{{title}}</div>
       <span class="select-none" v-html="description"/>
@@ -60,6 +60,7 @@ if (process.client) {
 canvas {
   @apply border;
   @apply border-black;
+  max-width: 100%;
   /* border: 1px solid black; */
   visibility: visible !important;
 }

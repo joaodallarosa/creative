@@ -64,7 +64,9 @@ export default new Piece(
       textAlign,
       CENTER,
       textFont,
+      pixelDensity
     }) => {
+      pixelDensity(1);
       word = random(badFeelings);
       createCanvas(sketch);
       fill(0);
