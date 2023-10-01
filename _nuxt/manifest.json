@@ -1,6 +1,6 @@
 {
   "node_modules/nuxt/dist/app/entry.mjs": {
-    "file": "entry-1b8f9d44.mjs",
+    "file": "entry-42d7bdf0.mjs",
     "src": "node_modules/nuxt/dist/app/entry.mjs",
     "isEntry": true,
     "dynamicImports": [
@@ -10,11 +10,11 @@
       "pages/pieces/[piece].vue"
     ],
     "css": [
-      "entry.4c431658.css"
+      "entry.874ac3f6.css"
     ]
   },
   "pages/index.vue": {
-    "file": "index-143ab625.mjs",
+    "file": "index-54e1c235.mjs",
     "src": "pages/index.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -25,7 +25,7 @@
     ]
   },
   "pages/nuggets/index.vue": {
-    "file": "index-b7543d00.mjs",
+    "file": "index-14ba1b98.mjs",
     "src": "pages/nuggets/index.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -33,7 +33,7 @@
     ]
   },
   "pages/pieces/[piece].vue": {
-    "file": "_piece_-14024aa5.mjs",
+    "file": "_piece_-5074f9cd.mjs",
     "src": "pages/pieces/[piece].vue",
     "isDynamicEntry": true,
     "imports": [
@@ -44,7 +44,7 @@
     ]
   },
   "src/pieces/index.ts": {
-    "file": "index-be9046c6.mjs",
+    "file": "index-77e899f8.mjs",
     "src": "src/pieces/index.ts",
     "isDynamicEntry": true
   }
