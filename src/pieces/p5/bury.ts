@@ -48,13 +48,16 @@ export default new Piece(
       CLOSE,
       atan2,
       loadFont,
+      loadImage
     } = sketch;
 
     let buffer;
     let font;
+    let coinImg;
 
     const preload = () => {
       font = loadFont("/creative/fonts/flicker.otf");
+      coinImg = loadImage('/creative/images/coin.png')
     };
 
     const setup = ({
@@ -64,7 +67,8 @@ export default new Piece(
       textAlign,
       CENTER,
       textFont,
-      pixelDensity
+      pixelDensity,
+      image
     }) => {
       pixelDensity(1);
       word = random(badFeelings);
@@ -86,11 +90,13 @@ export default new Piece(
       image,
     }) => {
       background(255);
-      fill(136, 8, 8);
-      stroke(136, 8, 8);
-      text(word, 0, 0, CANVAS_SIZE, CANVAS_SIZE);
-      fill(0)
-      stroke(60);
+      image(coinImg, CANVAS_SIZE/2 - 100, CANVAS_SIZE/2 - 100, 200,200);
+
+      // fill(136, 8, 8);
+      // stroke(136, 8, 8);
+      // text(word, 0, 0, CANVAS_SIZE, CANVAS_SIZE);
+      // fill(0)
+      // stroke(60);
       image(buffer, 0, 0);
       dirtParticles
         .sort((a, b) => a.sizeDraw - b.sizeDraw)
