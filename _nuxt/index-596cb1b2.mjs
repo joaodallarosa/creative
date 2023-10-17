@@ -1,0 +1,1 @@
+const n=700,i=()=>{if(!window||!window.innerWidth||!window.innerHeight)throw Error("Window element not available.");return window.innerWidth<700||window.innerHeight<700?Math.min(window.innerWidth,window.innerHeight):700};export{n as C,i as g};
