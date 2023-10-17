@@ -1,9 +1,7 @@
-import { Piece } from "../../classes/piece";
 import createCanvas from "../../utils/create-canvas";
 import { CANVAS_SIZE } from "../../configs";
 
-export default new Piece("Boyhood", "boyhood", (sketch) => {
-  var x = 0;
+export default (sketch) => {
   var JOAO;
   var go = false;
 
@@ -18,9 +16,7 @@ export default new Piece("Boyhood", "boyhood", (sketch) => {
   const SPEED = 30;
 
   const {
-    mount,
     stroke,
-    background,
     strokeWeight,
     pixelDensity,
     point,
@@ -33,6 +29,7 @@ export default new Piece("Boyhood", "boyhood", (sketch) => {
   } = sketch;
 
   const setup = () => {
+    pixelDensity(3.0);
     createCanvas(sketch);
     stroke(0);
     strokeWeight(STROKE_WEIGHT);
@@ -47,7 +44,7 @@ export default new Piece("Boyhood", "boyhood", (sketch) => {
     }
   };
 
-  const keyPressed = () => {
+  const mousePressed = () => {
     go = true;
   };
 
@@ -198,5 +195,5 @@ export default new Piece("Boyhood", "boyhood", (sketch) => {
     }
   }
 
-  return { setup, draw, keyPressed };
-});
+  return { setup, draw, mousePressed };
+};

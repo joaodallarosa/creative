@@ -1,7 +1,6 @@
-import { Piece } from "../../classes/piece";
 import createCanvas from "../../utils/create-canvas";
 
-export default new Piece("Multiverse Pots", "sketch", (sketch) => {
+export default (sketch) => {
   let cnv;
   let x, y;
   let size = 10;
@@ -38,7 +37,7 @@ export default new Piece("Multiverse Pots", "sketch", (sketch) => {
     let c = color(120, 126, 120);
   };
 
-  const draw = ({windowHeight, mouseX, mouseY}) => {
+  const draw = ({ windowHeight, mouseX, mouseY }) => {
     x = x + random(-5, 5);
     // x = x + 0.5;
     y = y - 4.5;
@@ -60,4 +59,4 @@ export default new Piece("Multiverse Pots", "sketch", (sketch) => {
   };
 
   return { setup, draw };
-});
+};

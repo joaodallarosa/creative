@@ -1,16 +1,26 @@
-import sketch from "./p5/sketch";
-import singleLine from "./p5/single-line";
-import anxietyTree from "./p5/anxiety-tree";
-import childhood from "./p5/childhood";
-import test from "./p5/test";
-import notArt from './p5/text';
-import onlyLines from './p5/dots';
-import bury from "./p5/bury";
+import anxietyTree from "./anxiety-tree";
+import bury from "./bury";
+import multiversePottery from "./sketch";
+import confidence from "./confidence";
+import fragment from "./fragment";
+import singleLine from "./single-line";
+import boyhood from "./boyhood";
+import notArt from "./not-art";
+import dots from "./dots";
+import synth from "./synth";
 
-import confidence from "./three/confidence";
-import fragment from "./three/fragment";
-
-export const pieces = [sketch, singleLine, anxietyTree, childhood, test, notArt, onlyLines, confidence, fragment, bury];
+export const pieces = [
+  anxietyTree,
+  bury,
+  multiversePottery,
+  boyhood,
+  confidence,
+  dots,
+  fragment,
+  notArt,
+  singleLine,
+  synth,
+];
 
 export default (name: string) => {
   return pieces.find((piece) => piece.url === name);
