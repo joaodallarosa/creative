@@ -1,10 +1,9 @@
-import { Piece } from "../../classes/piece";
 import { P5I, p5i } from "p5i";
 import createCanvas from "../../utils/create-canvas";
 import { Image } from "p5";
 import { CANVAS_SIZE } from "../../configs";
 
-export default new Piece("Only Lines", "only-lines", (sketch: P5I) => {
+export default (sketch: P5I) => {
   const {
     background,
     stroke,
@@ -13,7 +12,7 @@ export default new Piece("Only Lines", "only-lines", (sketch: P5I) => {
     pixelDensity,
     noFill,
     strokeWeight,
-    point
+    point,
   } = sketch;
 
   let img;
@@ -23,19 +22,19 @@ export default new Piece("Only Lines", "only-lines", (sketch: P5I) => {
   // const LINE_SPACING = 5
 
   const preload = () => {
-    img = loadImage("/creative/images/dua.jpeg");
-  }
+    img = loadImage("/creative/images/cat.jpeg");
+  };
 
-  const setup = ({windowWidth, windowHeight}) => {
-    img.resize(CANVAS_SIZE,0);
-    console.log('oi', originalImage)
+  const setup = ({ windowWidth, windowHeight }) => {
+    img.resize(CANVAS_SIZE, 0);
+    console.log("oi", originalImage);
     background(1000);
-    pixelDensity(4.0); // 20.0 for exporting
+    pixelDensity(6.0); // 20.0 for exporting
     // cnv = createCanvas(img.width, img.height);
-    createCanvas(sketch)
+    createCanvas(sketch);
     background(1000);
     renderImage();
-  }
+  };
 
   const renderImage = () => {
     for (let col = SPACING; col < img.width; col += SPACING) {
@@ -43,16 +42,16 @@ export default new Piece("Only Lines", "only-lines", (sketch: P5I) => {
         drawPixel(col, row);
       }
     }
-  }
+  };
 
-  const SPACING = 5;
-  const initialBlackFrequency = 8;
-  const frequencyGap = 0.15;
+  const SPACING = 6;
+  const initialBlackFrequency = 12;
+  const frequencyGap = 0.14;
   const freqMultiplier = 0.0035;
   const frequencySteps = 255 / (frequencyGap * freqMultiplier);
   // const lineSize = 7
   const lineSize = SPACING;
-  let lineWeight = 0.6;
+  let lineWeight = 1.1;
   // const whiteFrequency = 220
 
   function drawPixel(x, y) {
@@ -82,4 +81,4 @@ export default new Piece("Only Lines", "only-lines", (sketch: P5I) => {
 
   return { setup, preload };
   // };
-});
+};

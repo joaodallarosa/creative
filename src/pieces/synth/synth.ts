@@ -1,8 +1,7 @@
-import { Piece } from "../../classes/piece";
 import { P5I, p5i } from "p5i";
 import createCanvas from "../../utils/create-canvas";
 
-export default new Piece("Synth", "synth", (sketch: P5I) => {
+export default (sketch: P5I) => {
   let y = 100;
 
   const { background, random, stroke, frameRate } = sketch;
@@ -24,4 +23,4 @@ export default new Piece("Synth", "synth", (sketch: P5I) => {
 
   return { setup, draw };
   // };
-});
+};

@@ -1,16 +1,9 @@
-import { Piece } from "../../classes/piece";
 import { P5I, p5i } from "p5i";
 import createCanvas from "../../utils/create-canvas";
 
-export default new Piece("Not Art", "not-art", (sketch: P5I) => {
-  const {
-    background,
-    random,
-    loadFont,
-    HALF_PI,
-    createGraphics,
-    image,
-  } = sketch;
+export default (sketch: P5I) => {
+  const { background, random, loadFont, HALF_PI, createGraphics, image } =
+    sketch;
 
   let font;
   const FONT_SIZE = 350;
@@ -60,4 +53,4 @@ export default new Piece("Not Art", "not-art", (sketch: P5I) => {
 
   return { setup, preload };
   // };
-});
+};

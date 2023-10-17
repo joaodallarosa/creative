@@ -1,9 +1,8 @@
-import { ThreePiece } from "../../classes/threePiece";
 import * as THREE from "three";
 import ToMelt from "~/src/classes/toMelt";
 import { CANVAS_SIZE } from "../../configs";
 
-export default new ThreePiece("Confidence :)", "confidence", (element) => {
+export default (element) => {
   let meltObjs = [];
   const meltOption = {
     speed: 0.2,
@@ -83,4 +82,4 @@ export default new ThreePiece("Confidence :)", "confidence", (element) => {
     cancelAnimationFrame(reqAnim);
     console.log("SCENE", scene);
   };
-});
+};
