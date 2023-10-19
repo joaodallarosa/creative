@@ -8,6 +8,7 @@ import boyhood from "./boyhood";
 import notArt from "./not-art";
 import dots from "./dots";
 import synth from "./synth";
+import flowField from "./flow-field";
 
 export const pieces = [
   anxietyTree,
@@ -20,6 +21,7 @@ export const pieces = [
   notArt,
   singleLine,
   synth,
+  flowField,
 ];
 
 export default (name: string) => {
