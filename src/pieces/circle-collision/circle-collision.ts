@@ -1,4 +1,5 @@
 import { p5i, P5I } from "p5i";
+import * as Tone from "tone";
 import createCanvas from "../../utils/create-canvas";
 import { getCanvasSize } from "~~/src/configs";
 // Do not import p5 directly to avoid SSR/module-shape issues.
@@ -33,13 +34,63 @@ export default (sketch: P5I) => {
 
   let particles = [];
   let forceZones = [];
-  const zoneForce = 0.0008;
+  const zoneForce = 0.001;
   let plateImg;
-  let plateSound;
-
+  let playerIndex = 0;
+  let audioStarted = false;
+  let plateSound = "/creative/audio/perfect-chime.mp3";
+  let players: any = null;
+  const PLAYERS_POOL = 30;
+  let _limiter: any = null;
   // Load the image.
-  function preload() {
+  async function preload() {
     plateImg = loadImage("/creative/images/plate.png");
+    // Try to start audio context if allowed by the browser.
+    try {
+      await Tone.start();
+      audioStarted = true;
+    } catch (e) {
+      // will usually be blocked until a user gesture
+    }
+
+    // Create a small pool of named players (hit0..hitN) so each collision can
+    // start and play to completion without cutting other voices.
+    try {
+      // create a master limiter to avoid clipping when many voices overlap
+      _limiter = new Tone.Limiter(-1).toDestination();
+
+      const map: Record<string, string> = {};
+      for (let i = 0; i < PLAYERS_POOL; i++) {
+        map[`hit${i}`] = plateSound;
+      }
+
+      players = new Tone.Players(map, () => {
+        console.log(`Tone.Players pool loaded (${PLAYERS_POOL})`);
+      }).connect(_limiter);
+    } catch (e) {
+      console.warn("Tone.Players creation failed:", e);
+      players = null;
+    }
+  }
+
+  function playAt(volumeDb) {
+    const epsilon = 0.001;
+    try {
+      if (!players) return;
+      const key = `hit${playerIndex}`;
+      playerIndex = (playerIndex + 1) % PLAYERS_POOL;
+      const p: any = players.player(key);
+      if (!p) return;
+
+      // do NOT stop the player; allow it to play to completion. Using a
+      // pool avoids retriggering the same instance and therefore avoids cuts.
+      if (p.volume && typeof p.volume.value !== "undefined") {
+        p.volume.value = volumeDb;
+      }
+      p.start(Tone.now() + epsilon);
+    } catch (e) {
+      console.warn("playAt error", e);
+    }
   }
 
   const setup = ({
@@ -54,11 +105,10 @@ export default (sketch: P5I) => {
     createCanvas(sketch);
     fill(0);
     textSize(CANVAS_SIZE / 7);
-    frameRate(60);
+    frameRate(24);
 
     /** Force Zones Setup */
     // avoid importing p5 directly — use the injected `sketch` and the client global window.p5
-    type Vector = any;
     forceZones.push(
       new ForceZone({
         position: createVector(CANVAS_SIZE / 3, 0),
@@ -117,11 +167,11 @@ export default (sketch: P5I) => {
     );
 
     /** Plates Setup */
-    const platesCount = 20;
-    const plateSizeMin = 30;
-    const plateSizeMax = 120;
+    const platesCount = 15;
+    // const plateSizeMin = 80;
+    // const plateSizeMax = 420;
     for (let i = 0; i < platesCount; i++) {
-      const size = random(plateSizeMin, plateSizeMax);
+      // const size = random(plateSizeMin, plateSizeMax);
       particles.push(
         new Particle(random(0, CANVAS_SIZE), random(0, CANVAS_SIZE))
       );
@@ -165,7 +215,17 @@ export default (sketch: P5I) => {
   };
 
   const mousePressed = () => {
-    console.log("mouse pressed!");
+    // Resume the AudioContext on first user gesture so Tone can play audio
+    console.log("mouse pressed! resuming audio context...");
+    Tone.start()
+      .then(() => {
+        audioStarted = true;
+        // if the player is ready, we could optionally warm it up
+        // console.log('AudioContext started')
+      })
+      .catch((err) => {
+        console.warn("Tone.start() failed:", err);
+      });
   };
   class Particle {
     position: Vector;
@@ -180,7 +240,7 @@ export default (sketch: P5I) => {
       this.velocity.normalize();
       this.velocity.mult(random(0.05, 0.2));
       this.acceleration = createVector(0, 0);
-      this.mass = random(2, 8);
+      this.mass = random(2, 10);
       this.r = sqrt(this.mass) * 20;
     }
 
@@ -203,10 +263,6 @@ export default (sketch: P5I) => {
       let impactVector = other.position.copy().sub(this.position);
       let d = impactVector.mag();
       if (d < this.r + other.r) {
-        if (plateSound) {
-          plateSound.play();
-        }
-
         // Push the particles out so that they are not overlapping
         let overlap = d - (this.r + other.r);
         let dir = impactVector.copy();
@@ -220,12 +276,48 @@ export default (sketch: P5I) => {
 
         let mSum = this.mass + other.mass;
         let vDiff = other.velocity.copy().sub(this.velocity);
+        let teste = vDiff.copy().mag();
+        // console.log("vDiff teste>>>>>", teste);
+        /** Play Sound with volume according to force */
+        try {
+          if (players) {
+            // if (teste > 0.4 && teste <= 0.4) {
+            //   playAt(-40);
+            // }
+            if (teste > 0.3 && teste <= 0.8) {
+              playAt(-40);
+            }
+            if (teste > 0.8 && teste <= 1) {
+              playAt(-30);
+            }
+            if (teste > 1 && teste <= 2) {
+              playAt(-26);
+            }
+            if (teste > 2) {
+              playAt(-20);
+            }
+          }
+          // if (samplePlayers.length > 0 && audioStarted) {
+          //   const epsilon = 0.001;
+          //   // const startTime = Tone.now() + epsilon;
+          //   const player = samplePlayers[playerIndex];
+          //   // playerIndex = (playerIndex + 1) % samplePlayers.length;
+          //   player;
+          //   // player.start(startTime);
+          // }
+        } catch (e) {
+          console.warn("samplePlayers start error", e);
+        }
+
         // Particle A (this)
         let num = vDiff.dot(impactVector);
         let den = mSum * d * d;
         let deltaVA = impactVector.copy();
         deltaVA.mult((2 * other.mass * num) / den);
+        // console.log("BEFORE COLISION>>>>>", this.velocity);
+
         this.velocity.add(deltaVA.mult(0.8));
+        // console.log("AFTER COLISION>>>>>", this.velocity);
         // Particle B (other)
         let deltaVB = impactVector.copy();
         deltaVB.mult((-2 * this.mass * num) / den);
@@ -255,7 +347,7 @@ export default (sketch: P5I) => {
     // Method to display
     show() {
       stroke(255);
-      strokeWeight(0.5);
+      strokeWeight(0.7);
       fill(255, 255, 255, 0);
       image(
         plateImg,
