@@ -1,106 +1,225 @@
-import { P5I } from "p5i";
+import { p5i, P5I } from "p5i";
 import createCanvas from "../../utils/create-canvas";
 import { getCanvasSize } from "~~/src/configs";
-import { Vector } from "p5";
+import p5, { Vector } from "p5";
+import { ForceZone } from "./classes/force-zone";
 
 export default (sketch: P5I) => {
   const CANVAS_SIZE = getCanvasSize();
-  let circles = [];
-  let pos;
-  let vel;
-  const GRAVITY = 0.1;
   const {
     random,
     stroke,
     frameRate,
-    TWO_PI,
-    beginShape,
-    vertex,
-    endShape,
     cos,
     sin,
-    CLOSE,
-    atan2,
-    loadFont,
-    loadImage,
     circle,
     strokeWeight,
-    point,
     push,
     pop,
     createVector,
-    applyMatrix,
     triangle,
-    dist,
     line,
+    dist,
+    sqrt,
+    loadImage,
+    image,
+    fill,
+    arc,
+    // loadSound,
+    // soundFormats,
   } = sketch;
 
   let plates = [];
-  let center;
+  let particles = [];
+  let forceZones = [];
+  const zoneForce = 0.0004;
+  let plateImg;
+  let plateSound;
 
-  const setup = ({
-    createGraphics,
-    fill,
-    textSize,
-    pixelDensity,
-    createVector,
-  }) => {
+  // Load the image.
+  function preload() {
+    // p5i.soundFormats("mp3", "ogg");
+    // plateSound = p5i.loadSound("/assets/doorbell");
+    plateImg = loadImage("/creative/images/plate.png");
+  }
+
+  const setup = ({ fill, textSize, pixelDensity, createVector }) => {
     pixelDensity(1);
     createCanvas(sketch);
     fill(0);
     textSize(CANVAS_SIZE / 7);
     frameRate(60);
-    const platesCount = 8;
+
+    /** Force Zones Setup */
+    forceZones.push(
+      new ForceZone({
+        position: createVector(CANVAS_SIZE / 3, 0),
+        force: createVector(0, -zoneForce),
+        height: CANVAS_SIZE,
+        width: CANVAS_SIZE / 3,
+      })
+    );
+    forceZones.push(
+      new ForceZone({
+        position: createVector(CANVAS_SIZE / 2, 0),
+        force: createVector(zoneForce, 0),
+        height: 100,
+        width: CANVAS_SIZE / 2,
+      })
+    );
+    forceZones.push(
+      new ForceZone({
+        position: createVector(0, 0),
+        force: createVector(zoneForce, 0),
+        height: 100,
+        width: CANVAS_SIZE / 2,
+      })
+    );
+    forceZones.push(
+      new ForceZone({
+        position: createVector(CANVAS_SIZE / 2, CANVAS_SIZE - 100),
+        force: createVector(-zoneForce, 0),
+        height: 100,
+        width: CANVAS_SIZE / 2,
+      })
+    );
+    forceZones.push(
+      new ForceZone({
+        position: createVector(0, CANVAS_SIZE - 100),
+        force: createVector(zoneForce, 0),
+        height: 100,
+        width: CANVAS_SIZE / 2,
+      })
+    );
+    forceZones.push(
+      new ForceZone({
+        position: createVector(0, 0),
+        force: createVector(0, zoneForce),
+        height: CANVAS_SIZE,
+        width: 200,
+      })
+    );
+    forceZones.push(
+      new ForceZone({
+        position: createVector(CANVAS_SIZE - 200, 0),
+        force: createVector(0, zoneForce),
+        height: CANVAS_SIZE,
+        width: 200,
+      })
+    );
+
+    /** Plates Setup */
+    const platesCount = 30;
     const plateSizeMin = 30;
     const plateSizeMax = 120;
     for (let i = 0; i < platesCount; i++) {
       const size = random(plateSizeMin, plateSizeMax);
-      plates.push(
-        new Plate({
-          mass: size,
-          diameter: size,
-          position: createVector(
-            random(0, CANVAS_SIZE),
-            random(0, CANVAS_SIZE)
-          ),
-          velocity: createVector(random(-0.3, 0.3), random(-0.3, 0.3)),
-        })
+      particles.push(
+        new Particle(random(0, CANVAS_SIZE), random(0, CANVAS_SIZE))
       );
+      // placePlate(
+      //   new Plate({
+      //     mass: size,
+      //     diameter: size,
+      //     position: createVector(
+      //       random(0, CANVAS_SIZE),
+      //       random(0, CANVAS_SIZE)
+      //     ),
+      //     velocity: createVector(random(-0.3, 0.3), random(-0.3, 0.3)),
+      //   })
+      // );
     }
   };
 
-  const draw = ({
-    background,
-    fill,
-    text,
-    image,
-    point,
-    mouseX,
-    mouseY,
-    translate,
-    rotate,
-  }) => {
-    background(209, 242, 255);
-    plates.forEach((plate, i) => {
-      // if (plate.position.x < CANVAS_SIZE/2 + 100 && plate.position.x > CANVAS_SIZE/2 - 100) {
-      //   plate.velocity.y -= 0.001
-      // }
-      plates
-        .filter((_, i2) => i2 !== i)
-        .forEach((other) => {
-          plate.checkCollision(other);
-        });
-      plate.update();
-      stroke(0);
-      fill(255);
-      plate.draw();
-      plate.drawVector(translate, rotate);
+  const draw = ({ background, fill, rect, drawingContext, ellipse }) => {
+    background(45, 136, 155);
+    forceZones.forEach((zone) => {
+      // zone.draw({ push, pop, stroke, rect, fill });
+      // zone.applyForce(plates);
+      zone.applyForce(particles);
     });
+
+    // for (let i = 0; i < plates.length; i++) {
+    //   let plateA = plates[i];
+    //   for (let j = i + 1; j < plates.length; j++) {
+    //     const plateB = plates[j];
+    //     plateA.checkCollision(plateB);
+    //   }
+    // }
+
+    // Style the circle using shadows.
+    for (let i = 0; i < particles.length; i++) {
+      let a = particles[i];
+      push();
+      drawingContext.shadowOffsetX = 35;
+      drawingContext.shadowOffsetY = -25;
+      drawingContext.shadowBlur = 30;
+      drawingContext.shadowColor = "rgb(0 0 0 / 20%)";
+      fill(0);
+      ellipse(a.position.x, a.position.y, a.r * 2, a.r * 2);
+      pop();
+    }
+
+    for (let i = 0; i < particles.length; i++) {
+      let a = particles[i];
+      for (let j = i + 1; j < particles.length; j++) {
+        const b = particles[j];
+        a.collide(b);
+      }
+    }
+
+    // plates
+    //     .filter((_, i2) => i2 !== i)
+    //     .forEach((other) => {
+    //       plate.checkCollision(other);
+    //     });
+
+    particles.forEach((element) => {
+      element.update();
+      element.edges();
+      element.show();
+    });
+
+    // plates.forEach((plate) => {
+    //   // if (plate.position.x < CANVAS_SIZE/2 + 100 && plate.position.x > CANVAS_SIZE/2 - 100) {
+    //   //   plate.velocity.y -= 0.001
+    //   // }
+
+    //   plate.update();
+    //   stroke(0);
+    //   fill(255);
+    //   plate.draw();
+    //   // plate.drawVector(translate, rotate);
+    // });
   };
 
   const mousePressed = () => {
     console.log("mouse pressed!");
   };
+
+  function placePlate(plate: Plate) {
+    let position = getRandomPosition(plate.r);
+    plate.position = position;
+    while (plates.some((p) => collision(plate, p))) {
+      plate.position = getRandomPosition(plate.r);
+    }
+    plates.push(plate);
+  }
+
+  function collision(c1, c2) {
+    let d = dist(c1.position.x, c1.position.y, c2.position.x, c2.position.y);
+    if (d < c1.r + c2.r) {
+      return true;
+    }
+    return false;
+  }
+
+  function getRandomPosition(radius) {
+    return createVector(
+      random(0 + radius, CANVAS_SIZE - radius),
+      random(0 + radius, CANVAS_SIZE - radius)
+    );
+  }
 
   class Plate {
     diameter: number;
@@ -118,8 +237,9 @@ export default (sketch: P5I) => {
       this.r = this.diameter / 2;
     }
     update() {
-      this.position.add(this.velocity);
-
+      // console.log(this.velocity.limit(0.5).y)
+      this.position.add(this.velocity.limit(0.5));
+      // this.position.add(this.velocity);
       this.checkBoundaryCollision();
     }
     checkBoundaryCollision() {
@@ -246,9 +366,117 @@ export default (sketch: P5I) => {
         this.velocity.y = cosine * vFinal[0].y + sine * vFinal[0].x;
         other.velocity.x = cosine * vFinal[1].x - sine * vFinal[1].y;
         other.velocity.y = cosine * vFinal[1].y + sine * vFinal[1].x;
+
+        // energy loss
+        this.velocity.x *= 0.7;
+        this.velocity.y *= 0.7;
+        other.velocity.x *= 0.7;
+        other.velocity.y *= 0.7;
       }
     }
   }
 
-  return { setup, draw, mousePressed };
+  class Particle {
+    position: Vector;
+    velocity: Vector;
+    acceleration: Vector;
+    mass: number;
+    r: number;
+    constructor(x, y) {
+      this.position = createVector(x, y);
+      this.velocity = p5.Vector.random2D();
+      this.velocity.mult(random(0.05, 0.2));
+      this.acceleration = createVector(0, 0);
+      this.mass = random(2, 8);
+      this.r = sqrt(this.mass) * 20;
+    }
+
+    applyForce(force) {
+      let f = force.copy();
+      f.div(this.mass);
+      this.acceleration.add(f);
+    }
+
+    // Method to update position
+    update() {
+      this.velocity.add(this.acceleration);
+      this.position.add(this.velocity);
+      this.acceleration.mult(0);
+    }
+
+    // Collision Detection and Resolution
+    collide(other) {
+      let impactVector = p5.Vector.sub(other.position, this.position);
+      let d = impactVector.mag();
+      if (d < this.r + other.r) {
+        // Push the particles out so that they are not overlapping
+        let overlap = d - (this.r + other.r);
+        let dir = impactVector.copy();
+        dir.setMag(overlap * 0.5);
+        this.position.add(dir);
+        other.position.sub(dir);
+
+        // Correct the distance!
+        d = this.r + other.r;
+        impactVector.setMag(d);
+
+        let mSum = this.mass + other.mass;
+        let vDiff = p5.Vector.sub(other.velocity, this.velocity);
+        // Particle A (this)
+        let num = vDiff.dot(impactVector);
+        let den = mSum * d * d;
+        let deltaVA = impactVector.copy();
+        deltaVA.mult((2 * other.mass * num) / den);
+        this.velocity.add(deltaVA.mult(0.8));
+        // Particle B (other)
+        let deltaVB = impactVector.copy();
+        deltaVB.mult((-2 * this.mass * num) / den);
+        other.velocity.add(deltaVB.mult(0.8));
+      }
+    }
+
+    // Bounce edges
+    edges() {
+      if (this.position.x > CANVAS_SIZE - this.r) {
+        this.position.x = CANVAS_SIZE - this.r;
+        this.velocity.x *= -1;
+      } else if (this.position.x < this.r) {
+        this.position.x = this.r;
+        this.velocity.x *= -1;
+      }
+
+      if (this.position.y > CANVAS_SIZE - this.r) {
+        this.position.y = CANVAS_SIZE - this.r;
+        this.velocity.y *= -1;
+      } else if (this.position.y < this.r) {
+        this.position.y = this.r;
+        this.velocity.y *= -1;
+      }
+    }
+
+    // Method to display
+    show() {
+      stroke(255);
+      strokeWeight(0.5);
+      fill(255, 255, 255, 0);
+      image(
+        plateImg,
+        this.position.x - this.r,
+        this.position.y - this.r,
+        this.r * 2,
+        this.r * 2
+      );
+      circle(this.position.x, this.position.y, this.r * 2);
+      // arc(
+      //   this.position.x,
+      //   this.position.y,
+      //   this.r * 2,
+      //   this.r * 2,
+      //   0,
+      //   Math.PI + Math.PI / 2
+      // );
+    }
+  }
+
+  return { setup, draw, mousePressed, preload };
 };
