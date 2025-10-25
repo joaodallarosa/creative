@@ -11,11 +11,12 @@
     "nuxt": "npm:nuxt3@latest",
     "push-dir": "^0.4.1",
     "tailwindcss": "^3.0.7",
-    "three": "^0.141.0"
+    "three": "^0.141.0",
+    "@types/p5": "^1.4.9"
   },
   "dependencies": {
     "@heroicons/vue": "^1.0.5",
-    "p5": "^1.4.1",
-    "p5i": "^0.4.2"
+    "p5": "^1.11.11",
+    "p5i": "^0.6.0"
   }
 }

@@ -1,11 +1,12 @@
-import { Vector } from "p5";
 import { P5I } from "p5i";
 
+type Vector = any;
+
 export class ForceZone {
-  position: Vector;
+  position: any;
   width: number;
   height: number;
-  force: Vector;
+  force: any;
   constructor({ position, width, height, force }) {
     this.position = position;
     this.width = width;
