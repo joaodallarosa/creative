@@ -1,16 +1,14 @@
-import { p5i, P5I } from "p5i";
+import { P5I } from "p5i";
 import * as Tone from "tone";
-import createCanvas from "../../utils/create-canvas";
-import { getCanvasSize } from "~~/src/configs";
-// Do not import p5 directly to avoid SSR/module-shape issues.
-// Use the client-exposed global `window.p5` or the provided `sketch` instance instead.
 import { ForceZone } from "./classes/force-zone";
 
 // avoid importing p5 directly — use the injected `sketch` and the client global window.p5
 type Vector = any;
 
 export default (sketch: P5I) => {
-  const CANVAS_SIZE = getCanvasSize();
+  // const CANVAS_SIZE = getCanvasSize();
+  const CANVAS_WIDTH = window.innerWidth;
+  const CANVAS_HEIGHT = window.innerHeight;
   const {
     random,
     stroke,
@@ -22,25 +20,29 @@ export default (sketch: P5I) => {
     push,
     pop,
     createVector,
-    triangle,
-    line,
-    dist,
     sqrt,
     loadImage,
     image,
     fill,
-    arc,
   } = sketch;
 
+  const zoneForce = 0.002;
+  const DENSITY = 0.00002; /** per pixel */
+  // const platesCount = 70;
+  const platesCount = CANVAS_HEIGHT * CANVAS_WIDTH * DENSITY;
+  // console.log("plate", platesCount2);
   let particles = [];
   let forceZones = [];
-  const zoneForce = 0.001;
   let plateImg;
   let playerIndex = 0;
   let audioStarted = false;
-  let plateSound = "/creative/audio/perfect-chime.mp3";
+  let plateSounds = [
+    "/creative/audio/chime_1.wav",
+    "/creative/audio/chime_2.wav",
+    "/creative/audio/chime_3.wav",
+  ];
   let players: any = null;
-  const PLAYERS_POOL = 30;
+  const PLAYERS_POOL = 50;
   let _limiter: any = null;
   // Load the image.
   async function preload() {
@@ -61,7 +63,7 @@ export default (sketch: P5I) => {
 
       const map: Record<string, string> = {};
       for (let i = 0; i < PLAYERS_POOL; i++) {
-        map[`hit${i}`] = plateSound;
+        map[`hit${i}`] = random(plateSounds);
       }
 
       players = new Tone.Players(map, () => {
@@ -87,10 +89,75 @@ export default (sketch: P5I) => {
       if (p.volume && typeof p.volume.value !== "undefined") {
         p.volume.value = volumeDb;
       }
+      // p.fadeOut(random(0,100))
       p.start(Tone.now() + epsilon);
     } catch (e) {
       console.warn("playAt error", e);
     }
+  }
+
+  function zonesSetup() {
+    /** Force Zones Setup */
+    // avoid importing p5 directly — use the injected `sketch` and the client global window.p5
+    forceZones.push(
+      new ForceZone({
+        position: createVector(CANVAS_WIDTH / 3, 0),
+        force: createVector(0, zoneForce * -1),
+        height: CANVAS_HEIGHT,
+        width: CANVAS_WIDTH / 3,
+      })
+    );
+    forceZones.push(
+      new ForceZone({
+        position: createVector(CANVAS_WIDTH / 2, 0),
+        force: createVector(zoneForce, 0),
+        height: CANVAS_HEIGHT / 4,
+        width: CANVAS_WIDTH / 2,
+      })
+    );
+    forceZones.push(
+      new ForceZone({
+        position: createVector(0, 0),
+        force: createVector(zoneForce * -1, 0),
+        height: CANVAS_HEIGHT / 4,
+        width: CANVAS_WIDTH / 2,
+      })
+    );
+    forceZones.push(
+      new ForceZone({
+        position: createVector(
+          CANVAS_WIDTH / 2,
+          CANVAS_HEIGHT - CANVAS_HEIGHT / 4
+        ),
+        force: createVector(zoneForce * -1, 0),
+        height: CANVAS_HEIGHT / 4,
+        width: CANVAS_WIDTH / 2,
+      })
+    );
+    forceZones.push(
+      new ForceZone({
+        position: createVector(0, CANVAS_HEIGHT - CANVAS_HEIGHT / 4),
+        force: createVector(zoneForce, 0),
+        height: CANVAS_HEIGHT / 4,
+        width: CANVAS_WIDTH / 2,
+      })
+    );
+    forceZones.push(
+      new ForceZone({
+        position: createVector(0, 0),
+        force: createVector(0, zoneForce),
+        height: CANVAS_HEIGHT,
+        width: CANVAS_WIDTH / 3,
+      })
+    );
+    forceZones.push(
+      new ForceZone({
+        position: createVector((CANVAS_WIDTH / 3) * 2, 0),
+        force: createVector(0, zoneForce),
+        height: CANVAS_HEIGHT,
+        width: CANVAS_WIDTH / 3,
+      })
+    );
   }
 
   const setup = ({
@@ -100,80 +167,17 @@ export default (sketch: P5I) => {
     createVector,
     soundFormats,
     loadSound,
+    createCanvas,
   }) => {
     pixelDensity(1);
-    createCanvas(sketch);
-    fill(0);
-    textSize(CANVAS_SIZE / 7);
+    createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
     frameRate(24);
 
-    /** Force Zones Setup */
-    // avoid importing p5 directly — use the injected `sketch` and the client global window.p5
-    forceZones.push(
-      new ForceZone({
-        position: createVector(CANVAS_SIZE / 3, 0),
-        force: createVector(0, -zoneForce),
-        height: CANVAS_SIZE,
-        width: CANVAS_SIZE / 3,
-      })
-    );
-    forceZones.push(
-      new ForceZone({
-        position: createVector(CANVAS_SIZE / 2, 0),
-        force: createVector(zoneForce, 0),
-        height: 100,
-        width: CANVAS_SIZE / 2,
-      })
-    );
-    forceZones.push(
-      new ForceZone({
-        position: createVector(0, 0),
-        force: createVector(zoneForce, 0),
-        height: 100,
-        width: CANVAS_SIZE / 2,
-      })
-    );
-    forceZones.push(
-      new ForceZone({
-        position: createVector(CANVAS_SIZE / 2, CANVAS_SIZE - 100),
-        force: createVector(-zoneForce, 0),
-        height: 100,
-        width: CANVAS_SIZE / 2,
-      })
-    );
-    forceZones.push(
-      new ForceZone({
-        position: createVector(0, CANVAS_SIZE - 100),
-        force: createVector(zoneForce, 0),
-        height: 100,
-        width: CANVAS_SIZE / 2,
-      })
-    );
-    forceZones.push(
-      new ForceZone({
-        position: createVector(0, 0),
-        force: createVector(0, zoneForce),
-        height: CANVAS_SIZE,
-        width: 200,
-      })
-    );
-    forceZones.push(
-      new ForceZone({
-        position: createVector(CANVAS_SIZE - 200, 0),
-        force: createVector(0, zoneForce),
-        height: CANVAS_SIZE,
-        width: 200,
-      })
-    );
-
-    /** Plates Setup */
-    const platesCount = 15;
-    // const plateSizeMin = 80;
-    // const plateSizeMax = 420;
+    zonesSetup();
     for (let i = 0; i < platesCount; i++) {
       // const size = random(plateSizeMin, plateSizeMax);
       particles.push(
-        new Particle(random(0, CANVAS_SIZE), random(0, CANVAS_SIZE))
+        new Particle(random(0, CANVAS_WIDTH), random(0, CANVAS_HEIGHT))
       );
     }
   };
@@ -192,10 +196,10 @@ export default (sketch: P5I) => {
       push();
       drawingContext.shadowOffsetX = 35;
       drawingContext.shadowOffsetY = -25;
-      drawingContext.shadowBlur = 30;
-      drawingContext.shadowColor = "rgb(0 0 0 / 20%)";
+      drawingContext.shadowBlur = 40;
+      drawingContext.shadowColor = "rgb(0 0 0 / 30%)";
       fill(0);
-      ellipse(a.position.x, a.position.y, a.r * 2, a.r * 2);
+      circle(a.position.x, a.position.y, a.r * 1.5);
       pop();
     }
 
@@ -220,8 +224,6 @@ export default (sketch: P5I) => {
     Tone.start()
       .then(() => {
         audioStarted = true;
-        // if the player is ready, we could optionally warm it up
-        // console.log('AudioContext started')
       })
       .catch((err) => {
         console.warn("Tone.start() failed:", err);
@@ -240,7 +242,7 @@ export default (sketch: P5I) => {
       this.velocity.normalize();
       this.velocity.mult(random(0.05, 0.2));
       this.acceleration = createVector(0, 0);
-      this.mass = random(2, 10);
+      this.mass = random(1, 8);
       this.r = sqrt(this.mass) * 20;
     }
 
@@ -276,67 +278,57 @@ export default (sketch: P5I) => {
 
         let mSum = this.mass + other.mass;
         let vDiff = other.velocity.copy().sub(this.velocity);
-        let teste = vDiff.copy().mag();
+        // let teste = vDiff.copy().mag();
         // console.log("vDiff teste>>>>>", teste);
         /** Play Sound with volume according to force */
-        try {
-          if (players) {
-            // if (teste > 0.4 && teste <= 0.4) {
-            //   playAt(-40);
-            // }
-            if (teste > 0.3 && teste <= 0.8) {
-              playAt(-40);
-            }
-            if (teste > 0.8 && teste <= 1) {
-              playAt(-30);
-            }
-            if (teste > 1 && teste <= 2) {
-              playAt(-26);
-            }
-            if (teste > 2) {
-              playAt(-20);
-            }
-          }
-          // if (samplePlayers.length > 0 && audioStarted) {
-          //   const epsilon = 0.001;
-          //   // const startTime = Tone.now() + epsilon;
-          //   const player = samplePlayers[playerIndex];
-          //   // playerIndex = (playerIndex + 1) % samplePlayers.length;
-          //   player;
-          //   // player.start(startTime);
-          // }
-        } catch (e) {
-          console.warn("samplePlayers start error", e);
-        }
 
         // Particle A (this)
         let num = vDiff.dot(impactVector);
         let den = mSum * d * d;
         let deltaVA = impactVector.copy();
         deltaVA.mult((2 * other.mass * num) / den);
-        // console.log("BEFORE COLISION>>>>>", this.velocity);
-
-        this.velocity.add(deltaVA.mult(0.8));
-        // console.log("AFTER COLISION>>>>>", this.velocity);
+        this.velocity.add(deltaVA.mult(0.6));
         // Particle B (other)
         let deltaVB = impactVector.copy();
         deltaVB.mult((-2 * this.mass * num) / den);
-        other.velocity.add(deltaVB.mult(0.8));
+        other.velocity.add(deltaVB.mult(0.6));
+
+        // console.log("Deltas >>>>>", deltaVA.mag(), deltaVB.mag());
+        const soundForceThreshold = 0.6;
+        if (
+          deltaVA.mag() >= soundForceThreshold ||
+          deltaVB.mag() >= soundForceThreshold
+        ) {
+          playAt(-20);
+        }
+        // if () {
+        //   if (players) {
+        //       if (teste > 0.8 && teste <= 1) {
+        //         playAt(-30);
+        //       }
+        //       if (teste > 1 && teste <= 2) {
+        //         playAt(-26);
+        //       }
+        //       if (teste > 2) {
+        //         playAt(-20);
+        //       }
+        //   }
+        // }
       }
     }
 
     // Bounce edges
     edges() {
-      if (this.position.x > CANVAS_SIZE - this.r) {
-        this.position.x = CANVAS_SIZE - this.r;
+      if (this.position.x > CANVAS_WIDTH - this.r) {
+        this.position.x = CANVAS_WIDTH - this.r;
         this.velocity.x *= -1;
       } else if (this.position.x < this.r) {
         this.position.x = this.r;
         this.velocity.x *= -1;
       }
 
-      if (this.position.y > CANVAS_SIZE - this.r) {
-        this.position.y = CANVAS_SIZE - this.r;
+      if (this.position.y > CANVAS_HEIGHT - this.r) {
+        this.position.y = CANVAS_HEIGHT - this.r;
         this.velocity.y *= -1;
       } else if (this.position.y < this.r) {
         this.position.y = this.r;
