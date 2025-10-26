@@ -1,6 +1,6 @@
 {
   "node_modules/nuxt/dist/app/entry.mjs": {
-    "file": "entry-6c67fafc.mjs",
+    "file": "entry-f67bf1a0.mjs",
     "src": "node_modules/nuxt/dist/app/entry.mjs",
     "isEntry": true,
     "dynamicImports": [
@@ -12,11 +12,11 @@
       "pages/pieces/[piece].vue"
     ],
     "css": [
-      "entry.dc14d2f9.css"
+      "entry.717ddd4e.css"
     ]
   },
   "pages/clinamen.vue": {
-    "file": "clinamen-43773f9e.mjs",
+    "file": "clinamen-7c1c2424.mjs",
     "src": "pages/clinamen.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -27,8 +27,27 @@
     ]
   },
   "pages/index.vue": {
-    "file": "index-5ef3602d.mjs",
+    "file": "index-826e7307.mjs",
     "src": "pages/index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "node_modules/nuxt/dist/app/entry.mjs"
+    ],
+    "dynamicImports": [
+      "src/pieces/index.ts"
+    ]
+  },
+  "pages/nuggets/index.vue": {
+    "file": "index-cdd50e1c.mjs",
+    "src": "pages/nuggets/index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "node_modules/nuxt/dist/app/entry.mjs"
+    ]
+  },
+  "pages/pieces/[piece].vue": {
+    "file": "_piece_-59e14480.mjs",
+    "src": "pages/pieces/[piece].vue",
     "isDynamicEntry": true,
     "imports": [
       "node_modules/nuxt/dist/app/entry.mjs",
@@ -41,28 +60,8 @@
   "_index-596cb1b2.mjs": {
     "file": "index-596cb1b2.mjs"
   },
-  "pages/nuggets/index.vue": {
-    "file": "index-3eb6e26a.mjs",
-    "src": "pages/nuggets/index.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "node_modules/nuxt/dist/app/entry.mjs"
-    ]
-  },
-  "pages/pieces/[piece].vue": {
-    "file": "_piece_-c85b0bf4.mjs",
-    "src": "pages/pieces/[piece].vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "node_modules/nuxt/dist/app/entry.mjs",
-      "_index-596cb1b2.mjs"
-    ],
-    "dynamicImports": [
-      "src/pieces/index.ts"
-    ]
-  },
   "src/pieces/circle-collision/index.ts": {
-    "file": "index-e1ff208d.mjs",
+    "file": "index-3d8d6fcd.mjs",
     "src": "src/pieces/circle-collision/index.ts",
     "isDynamicEntry": true,
     "imports": [
