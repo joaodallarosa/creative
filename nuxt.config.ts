@@ -14,9 +14,10 @@ export default defineNuxtConfig({
     baseURL: "/creative/",
     head: {
       title: "Dalla Rosa Creative Coding",
-      viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+      viewport: "width=device-width, initial-scale=1, viewport-fit=cover",
       charset: "utf-8",
       link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
+      meta: [{ name: "apple-mobile-web-app-capable", content: "yes" }],
     },
   },
   build: {

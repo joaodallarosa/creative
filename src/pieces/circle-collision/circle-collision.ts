@@ -5,17 +5,20 @@ import { ForceZone } from "./classes/force-zone";
 // avoid importing p5 directly — use the injected `sketch` and the client global window.p5
 type Vector = any;
 
-function getViewportSize() {
-  const w = window.innerWidth;
-  const h = window.visualViewport
-    ? Math.round(window.visualViewport.height)
-    : window.innerHeight;
-  return { w, h };
+function vpWidth() {
+  return window.visualViewport?.width ?? window.innerWidth;
+}
+
+function vpHeight() {
+  const h = window.visualViewport?.height ?? window.innerHeight;
+  // subtract iOS safe areas so the *drawable* area matches what you see
+  const styles = getComputedStyle(document.documentElement);
+  const sat = parseFloat(styles.getPropertyValue("--sat")) || 0; // top inset in px
+  const sab = parseFloat(styles.getPropertyValue("--sab")) || 0; // bottom inset in px
+  return Math.max(0, Math.floor(h - sat - sab));
 }
 
 export default (sketch: P5I) => {
-  let { w: CANVAS_WIDTH, h: CANVAS_HEIGHT } = getViewportSize();
-
   const {
     random,
     stroke,
@@ -29,12 +32,13 @@ export default (sketch: P5I) => {
     loadImage,
     image,
     fill,
+    resizeCanvas,
   } = sketch;
 
+  let CANVAS_WIDTH;
+  let CANVAS_HEIGHT;
   const zoneForce = 0.001;
   const DENSITY = 0.00003; /** per pixel */
-  const platesCount = CANVAS_HEIGHT * CANVAS_WIDTH * DENSITY;
-  let particles = [];
   let forceZones = [];
   let plateImg;
   let playerIndex = 0;
@@ -46,7 +50,9 @@ export default (sketch: P5I) => {
   ];
   let players = null;
   let backgroundPlayer = null;
-  const PLAYERS_POOL = Math.floor(platesCount / 2);
+  let particles = [];
+  // const PLAYERS_POOL = Math.floor(platesCount / 2);
+  const PLAYERS_POOL = 10;
   let _limiter: any = null;
 
   async function preload() {
@@ -167,7 +173,19 @@ export default (sketch: P5I) => {
     );
   }
 
-  const setup = ({ pixelDensity, createCanvas }) => {
+  function windowResized() {
+    resizeCanvas(vpWidth(), vpHeight(), true);
+  }
+
+  // iOS Safari fires visualViewport resize when the URL bar shows/hides or on zoom
+  
+
+  const setup = ({ pixelDensity, createCanvas, fullscreen }) => {
+    CANVAS_WIDTH = vpWidth();
+    CANVAS_HEIGHT = vpHeight();
+    const platesCount = CANVAS_HEIGHT * CANVAS_WIDTH * DENSITY;
+
+    // fullscreen(true);
     pixelDensity(2);
     createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
     frameRate(24);
@@ -339,5 +357,5 @@ export default (sketch: P5I) => {
     }
   }
 
-  return { setup, draw, mousePressed, preload };
+  return { setup, draw, mousePressed, preload, windowResized };
 };

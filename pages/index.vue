@@ -25,25 +25,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { CANVAS_SIZE } from "~~/src/configs";
-const canvas = ref(null);
 let list = [];
-let threeList = [];
-let canvasSize = CANVAS_SIZE;
 
 if (process.client) {
   const { pieces } = await import("~~/src/pieces");
   list = pieces;
-  onMounted(() => {
-    console.log("CANVAS_SIZE", CANVAS_SIZE);
-    console.log("width/height", window.innerWidth, window.innerHeight);
-
-    if (window.innerWidth < CANVAS_SIZE || window.innerHeight < CANVAS_SIZE) {
-      canvasSize = Math.min(window.innerWidth, window.innerHeight);
-      console.log("Recalculate size...", canvasSize);
-    }
-    // console.log()
-  });
 }
 </script>

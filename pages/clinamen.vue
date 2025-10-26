@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="clinamen">
     <div class="absolute w-[100vw] h-[100dvh] text-white flex flex-col items-center text-center
       justify-center transition-opacity ease-out duration-[5s] opacity-100 text-lg px-4"
       :class="{ 'opacity-0': started, 'bg-black': displayQuote, 'bg-neutral-900': !displayQuote }">
@@ -29,10 +29,11 @@
 
         <button @click="onStart" class="mt-16 text-center border-2 rounded-xl p-4 font-bold">Start experience</button>
       </div>
-      <span class="absolute bottom-5 text-sm text-stone-200">Created by João Filipe Dalla Rosa</span>
+      <span @click="started = true;" class="absolute bottom-5 text-sm text-stone-200">Created by João Filipe Dalla
+        Rosa</span>
 
     </div>
-  <div class="max-w-full w-[100vw]" :style="{ height: canvasHeight + 'px' }" ref="canvas"></div>
+    <div ref="canvas" />
   </div>
 </template>
 
@@ -41,49 +42,43 @@ import { ref, onMounted, onUnmounted } from "vue";
 const canvas = ref(null);
 const started = ref(false);
 const displayQuote = ref(false);
-const canvasHeight = ref(0);
 
 if (process.client) {
+
   const { default: piece } = await import("~/src/pieces/circle-collision/");
-  const updateCanvasHeight = () => {
-    // prefer visualViewport height when available (handles mobile UI chrome)
-    const h = window.visualViewport ? Math.round(window.visualViewport.height) : window.innerHeight;
-    canvasHeight.value = h;
-  };
-
   onMounted(() => {
-    updateCanvasHeight();
-    // keep canvas sized when the viewport changes (orientation, address bar hide/show)
-    window.addEventListener("resize", updateCanvasHeight);
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener("resize", updateCanvasHeight);
-    }
-    window.addEventListener("orientationchange", updateCanvasHeight);
-
-    // mount the piece after sizing the container
     piece.mount(canvas.value);
   });
-
   onUnmounted(() => {
     piece.remove(canvas.value);
-    window.removeEventListener("resize", updateCanvasHeight);
-    if (window.visualViewport) {
-      window.visualViewport.removeEventListener("resize", updateCanvasHeight);
-    }
-    window.removeEventListener("orientationchange", updateCanvasHeight);
   });
 }
 
-function onStart() {
+async function onStart() {
+  await unlockIOSAudio();
   displayQuote.value = true;
   setTimeout(() => {
     started.value = true;
   }, 8000);
 }
-</script>
 
+
+function unlockIOSAudio() {
+  // 1) play a silent HTML5 audio loop (routes to the media channel that plays in silent mode)
+  const a = document.createElement('audio');
+  a.src =
+    "data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAACAA..." // very short silent mp3
+  a.loop = true;
+  a.setAttribute('playsinline', '');
+  a.volume = 0;      // keep it inaudible
+  a.play().catch(() => { /* ignore */ });
+}
+</script>
 <style>
-canvas {
+.clinamen canvas {
+  @apply border-none;
   max-width: 100%;
+  /* border: 1px solid black; */
+  visibility: visible !important;
 }
 </style>
