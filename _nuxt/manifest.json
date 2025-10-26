@@ -1,6 +1,6 @@
 {
   "node_modules/nuxt/dist/app/entry.mjs": {
-    "file": "entry-baf8676e.mjs",
+    "file": "entry-68478e63.mjs",
     "src": "node_modules/nuxt/dist/app/entry.mjs",
     "isEntry": true,
     "dynamicImports": [
@@ -16,7 +16,7 @@
     ]
   },
   "pages/clinamen.vue": {
-    "file": "clinamen-8af0d1ed.mjs",
+    "file": "clinamen-7acb8025.mjs",
     "src": "pages/clinamen.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -27,7 +27,7 @@
     ]
   },
   "pages/index.vue": {
-    "file": "index-83c547b4.mjs",
+    "file": "index-1f1cc72b.mjs",
     "src": "pages/index.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -42,7 +42,7 @@
     "file": "index-596cb1b2.mjs"
   },
   "pages/nuggets/index.vue": {
-    "file": "index-52aa4b4d.mjs",
+    "file": "index-3ea2145d.mjs",
     "src": "pages/nuggets/index.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -50,7 +50,7 @@
     ]
   },
   "pages/pieces/[piece].vue": {
-    "file": "_piece_-62fe5055.mjs",
+    "file": "_piece_-a67e7023.mjs",
     "src": "pages/pieces/[piece].vue",
     "isDynamicEntry": true,
     "imports": [
