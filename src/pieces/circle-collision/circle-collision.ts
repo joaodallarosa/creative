@@ -32,7 +32,7 @@ export default (sketch: P5I) => {
   } = sketch;
 
   const zoneForce = 0.001;
-  const DENSITY = 0.00002; /** per pixel */
+  const DENSITY = 0.00003; /** per pixel */
   const platesCount = CANVAS_HEIGHT * CANVAS_WIDTH * DENSITY;
   let particles = [];
   let forceZones = [];
@@ -168,7 +168,7 @@ export default (sketch: P5I) => {
   }
 
   const setup = ({ pixelDensity, createCanvas }) => {
-    pixelDensity(1);
+    pixelDensity(2);
     createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
     frameRate(24);
 

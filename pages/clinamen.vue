@@ -32,7 +32,7 @@
       <span class="absolute bottom-5 text-sm text-stone-200">Created by João Filipe Dalla Rosa</span>
 
     </div>
-    <div class="max-w-full" :class="`w-[100vw] h-[100vh]`" ref="canvas"></div>
+  <div class="max-w-full w-[100vw]" :style="{ height: canvasHeight + 'px' }" ref="canvas"></div>
   </div>
 </template>
 
@@ -41,14 +41,36 @@ import { ref, onMounted, onUnmounted } from "vue";
 const canvas = ref(null);
 const started = ref(false);
 const displayQuote = ref(false);
+const canvasHeight = ref(0);
 
 if (process.client) {
   const { default: piece } = await import("~/src/pieces/circle-collision/");
+  const updateCanvasHeight = () => {
+    // prefer visualViewport height when available (handles mobile UI chrome)
+    const h = window.visualViewport ? Math.round(window.visualViewport.height) : window.innerHeight;
+    canvasHeight.value = h;
+  };
+
   onMounted(() => {
+    updateCanvasHeight();
+    // keep canvas sized when the viewport changes (orientation, address bar hide/show)
+    window.addEventListener("resize", updateCanvasHeight);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", updateCanvasHeight);
+    }
+    window.addEventListener("orientationchange", updateCanvasHeight);
+
+    // mount the piece after sizing the container
     piece.mount(canvas.value);
   });
+
   onUnmounted(() => {
     piece.remove(canvas.value);
+    window.removeEventListener("resize", updateCanvasHeight);
+    if (window.visualViewport) {
+      window.visualViewport.removeEventListener("resize", updateCanvasHeight);
+    }
+    window.removeEventListener("orientationchange", updateCanvasHeight);
   });
 }
 
