@@ -8,7 +8,7 @@ import boyhood from "./boyhood";
 import notArt from "./not-art";
 import dots from "./dots";
 import synth from "./synth";
-import circles from "./circle-collision"
+// import circles from "./circle-collision"
 
 export const pieces = [
   anxietyTree,
@@ -21,7 +21,7 @@ export const pieces = [
   notArt,
   singleLine,
   synth,
-  circles
+  // circles
 ];
 
 export default (name: string) => {

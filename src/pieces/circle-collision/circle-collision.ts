@@ -13,8 +13,6 @@ export default (sketch: P5I) => {
     random,
     stroke,
     frameRate,
-    cos,
-    sin,
     circle,
     strokeWeight,
     push,
@@ -26,11 +24,9 @@ export default (sketch: P5I) => {
     fill,
   } = sketch;
 
-  const zoneForce = 0.002;
+  const zoneForce = 0.001;
   const DENSITY = 0.00002; /** per pixel */
-  // const platesCount = 70;
   const platesCount = CANVAS_HEIGHT * CANVAS_WIDTH * DENSITY;
-  // console.log("plate", platesCount2);
   let particles = [];
   let forceZones = [];
   let plateImg;
@@ -41,30 +37,35 @@ export default (sketch: P5I) => {
     "/creative/audio/chime_2.wav",
     "/creative/audio/chime_3.wav",
   ];
-  let players: any = null;
-  const PLAYERS_POOL = 50;
+  let players = null;
+  let backgroundPlayer = null;
+  const PLAYERS_POOL = Math.floor(platesCount / 2);
   let _limiter: any = null;
-  // Load the image.
+
   async function preload() {
     plateImg = loadImage("/creative/images/plate.png");
-    // Try to start audio context if allowed by the browser.
     try {
       await Tone.start();
       audioStarted = true;
     } catch (e) {
       // will usually be blocked until a user gesture
     }
-
     // Create a small pool of named players (hit0..hitN) so each collision can
     // start and play to completion without cutting other voices.
     try {
       // create a master limiter to avoid clipping when many voices overlap
       _limiter = new Tone.Limiter(-1).toDestination();
-
       const map: Record<string, string> = {};
       for (let i = 0; i < PLAYERS_POOL; i++) {
         map[`hit${i}`] = random(plateSounds);
       }
+
+      backgroundPlayer = new Tone.Player({
+        url: "/creative/audio/water.mp3",
+        autostart: true,
+        loop: true,
+        volume: -20,
+      }).toDestination();
 
       players = new Tone.Players(map, () => {
         console.log(`Tone.Players pool loaded (${PLAYERS_POOL})`);
@@ -89,7 +90,6 @@ export default (sketch: P5I) => {
       if (p.volume && typeof p.volume.value !== "undefined") {
         p.volume.value = volumeDb;
       }
-      // p.fadeOut(random(0,100))
       p.start(Tone.now() + epsilon);
     } catch (e) {
       console.warn("playAt error", e);
@@ -160,22 +160,13 @@ export default (sketch: P5I) => {
     );
   }
 
-  const setup = ({
-    fill,
-    textSize,
-    pixelDensity,
-    createVector,
-    soundFormats,
-    loadSound,
-    createCanvas,
-  }) => {
+  const setup = ({ pixelDensity, createCanvas }) => {
     pixelDensity(1);
     createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
     frameRate(24);
 
     zonesSetup();
     for (let i = 0; i < platesCount; i++) {
-      // const size = random(plateSizeMin, plateSizeMax);
       particles.push(
         new Particle(random(0, CANVAS_WIDTH), random(0, CANVAS_HEIGHT))
       );
@@ -186,11 +177,10 @@ export default (sketch: P5I) => {
     background(45, 136, 155);
     forceZones.forEach((zone) => {
       // zone.draw({ push, pop, stroke, rect, fill });
-      // zone.applyForce(plates);
       zone.applyForce(particles);
     });
 
-    // Style the circle using shadows.
+    /** Draw Shadows */
     for (let i = 0; i < particles.length; i++) {
       let a = particles[i];
       push();
@@ -203,6 +193,7 @@ export default (sketch: P5I) => {
       pop();
     }
 
+    /** Check Collision */
     for (let i = 0; i < particles.length; i++) {
       let a = particles[i];
       for (let j = i + 1; j < particles.length; j++) {
@@ -211,6 +202,7 @@ export default (sketch: P5I) => {
       }
     }
 
+    /** Update Plates */
     particles.forEach((element) => {
       element.update();
       element.edges();
@@ -220,7 +212,6 @@ export default (sketch: P5I) => {
 
   const mousePressed = () => {
     // Resume the AudioContext on first user gesture so Tone can play audio
-    console.log("mouse pressed! resuming audio context...");
     Tone.start()
       .then(() => {
         audioStarted = true;
@@ -275,45 +266,34 @@ export default (sketch: P5I) => {
         // Correct the distance!
         d = this.r + other.r;
         impactVector.setMag(d);
-
         let mSum = this.mass + other.mass;
         let vDiff = other.velocity.copy().sub(this.velocity);
-        // let teste = vDiff.copy().mag();
-        // console.log("vDiff teste>>>>>", teste);
-        /** Play Sound with volume according to force */
-
         // Particle A (this)
         let num = vDiff.dot(impactVector);
         let den = mSum * d * d;
         let deltaVA = impactVector.copy();
         deltaVA.mult((2 * other.mass * num) / den);
-        this.velocity.add(deltaVA.mult(0.6));
+        this.velocity.add(deltaVA.mult(0.4));
         // Particle B (other)
         let deltaVB = impactVector.copy();
         deltaVB.mult((-2 * this.mass * num) / den);
-        other.velocity.add(deltaVB.mult(0.6));
+        other.velocity.add(deltaVB.mult(0.4));
 
-        // console.log("Deltas >>>>>", deltaVA.mag(), deltaVB.mag());
-        const soundForceThreshold = 0.6;
-        if (
-          deltaVA.mag() >= soundForceThreshold ||
-          deltaVB.mag() >= soundForceThreshold
-        ) {
-          playAt(-20);
+        if (players) {
+          if (
+            (deltaVA.mag() >= 0.2 || deltaVB.mag() >= 0.2) &&
+            (deltaVA.mag() <= 0.8 || deltaVB.mag() <= 0.8)
+          ) {
+            playAt(-35);
+          } else if (
+            (deltaVA.mag() > 0.8 || deltaVB.mag() > 0.8) &&
+            (deltaVA.mag() <= 1.4 || deltaVB.mag() <= 1.4)
+          ) {
+            playAt(-25);
+          } else if (deltaVA.mag() > 1.4 || deltaVB.mag() > 1.4) {
+            playAt(-15);
+          }
         }
-        // if () {
-        //   if (players) {
-        //       if (teste > 0.8 && teste <= 1) {
-        //         playAt(-30);
-        //       }
-        //       if (teste > 1 && teste <= 2) {
-        //         playAt(-26);
-        //       }
-        //       if (teste > 2) {
-        //         playAt(-20);
-        //       }
-        //   }
-        // }
       }
     }
 
@@ -321,25 +301,25 @@ export default (sketch: P5I) => {
     edges() {
       if (this.position.x > CANVAS_WIDTH - this.r) {
         this.position.x = CANVAS_WIDTH - this.r;
-        this.velocity.x *= -1;
+        this.velocity.x *= -0.2;
       } else if (this.position.x < this.r) {
         this.position.x = this.r;
-        this.velocity.x *= -1;
+        this.velocity.x *= -0.2;
       }
 
       if (this.position.y > CANVAS_HEIGHT - this.r) {
         this.position.y = CANVAS_HEIGHT - this.r;
-        this.velocity.y *= -1;
+        this.velocity.y *= -0.2;
       } else if (this.position.y < this.r) {
         this.position.y = this.r;
-        this.velocity.y *= -1;
+        this.velocity.y *= -0.2;
       }
     }
 
     // Method to display
     show() {
-      stroke(255);
-      strokeWeight(0.7);
+      stroke(247, 240, 252);
+      strokeWeight(1);
       fill(255, 255, 255, 0);
       image(
         plateImg,
@@ -349,14 +329,6 @@ export default (sketch: P5I) => {
         this.r * 2
       );
       circle(this.position.x, this.position.y, this.r * 2);
-      // arc(
-      //   this.position.x,
-      //   this.position.y,
-      //   this.r * 2,
-      //   this.r * 2,
-      //   0,
-      //   Math.PI + Math.PI / 2
-      // );
     }
   }
 
