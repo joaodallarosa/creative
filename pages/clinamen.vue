@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="absolute w-[100vw] h-[100vh] text-white flex flex-col items-center text-center
+    <div class="absolute w-[100vw] h-[100dvh] text-white flex flex-col items-center text-center
       justify-center transition-opacity ease-out duration-[5s] opacity-100 text-lg px-4"
       :class="{ 'opacity-0': started, 'bg-black': displayQuote, 'bg-neutral-900': !displayQuote }">
 
@@ -62,10 +62,6 @@ function onStart() {
 
 <style>
 canvas {
-  @apply border;
-  @apply border-black;
   max-width: 100%;
-  /* border: 1px solid black; */
-  visibility: visible !important;
 }
 </style>

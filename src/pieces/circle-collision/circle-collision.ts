@@ -5,10 +5,17 @@ import { ForceZone } from "./classes/force-zone";
 // avoid importing p5 directly — use the injected `sketch` and the client global window.p5
 type Vector = any;
 
+function getViewportSize() {
+  const w = window.innerWidth;
+  const h = window.visualViewport
+    ? Math.round(window.visualViewport.height)
+    : window.innerHeight;
+  return { w, h };
+}
+
 export default (sketch: P5I) => {
-  // const CANVAS_SIZE = getCanvasSize();
-  const CANVAS_WIDTH = window.innerWidth;
-  const CANVAS_HEIGHT = window.innerHeight;
+  let { w: CANVAS_WIDTH, h: CANVAS_HEIGHT } = getViewportSize();
+
   const {
     random,
     stroke,
