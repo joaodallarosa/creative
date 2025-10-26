@@ -39,12 +39,15 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
+import unmute from "~/src/utils/unmute"
+
 const canvas = ref(null);
 const started = ref(false);
 const displayQuote = ref(false);
 
 if (process.client) {
-
+  let context = new (window.AudioContext || window.webkitAudioContext)();
+  unmute(context, true, true);
   const { default: piece } = await import("~/src/pieces/circle-collision/");
   onMounted(() => {
     piece.mount(canvas.value);
@@ -55,23 +58,10 @@ if (process.client) {
 }
 
 async function onStart() {
-  await unlockIOSAudio();
   displayQuote.value = true;
   setTimeout(() => {
     started.value = true;
   }, 8000);
-}
-
-
-function unlockIOSAudio() {
-  // 1) play a silent HTML5 audio loop (routes to the media channel that plays in silent mode)
-  const a = document.createElement('audio');
-  a.src =
-    "data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAACAA..." // very short silent mp3
-  a.loop = true;
-  a.setAttribute('playsinline', '');
-  a.volume = 0;      // keep it inaudible
-  a.play().catch(() => { /* ignore */ });
 }
 </script>
 <style>

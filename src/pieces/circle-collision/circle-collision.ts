@@ -33,6 +33,7 @@ export default (sketch: P5I) => {
     image,
     fill,
     resizeCanvas,
+    fullscreen,
   } = sketch;
 
   let CANVAS_WIDTH;
@@ -174,18 +175,17 @@ export default (sketch: P5I) => {
   }
 
   function windowResized() {
-    resizeCanvas(vpWidth(), vpHeight(), true);
+    CANVAS_HEIGHT = vpHeight();
+    CANVAS_WIDTH = vpWidth();
+    resizeCanvas(CANVAS_WIDTH, CANVAS_HEIGHT, true);
   }
 
   // iOS Safari fires visualViewport resize when the URL bar shows/hides or on zoom
-  
-
   const setup = ({ pixelDensity, createCanvas, fullscreen }) => {
     CANVAS_WIDTH = vpWidth();
     CANVAS_HEIGHT = vpHeight();
     const platesCount = CANVAS_HEIGHT * CANVAS_WIDTH * DENSITY;
 
-    // fullscreen(true);
     pixelDensity(2);
     createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
     frameRate(24);
@@ -298,11 +298,11 @@ export default (sketch: P5I) => {
         let den = mSum * d * d;
         let deltaVA = impactVector.copy();
         deltaVA.mult((2 * other.mass * num) / den);
-        this.velocity.add(deltaVA.mult(0.4));
+        this.velocity.add(deltaVA.mult(0.6));
         // Particle B (other)
         let deltaVB = impactVector.copy();
         deltaVB.mult((-2 * this.mass * num) / den);
-        other.velocity.add(deltaVB.mult(0.4));
+        other.velocity.add(deltaVB.mult(0.6));
 
         if (players) {
           if (
