@@ -1,6 +1,6 @@
 {
   "node_modules/nuxt/dist/app/entry.mjs": {
-    "file": "entry-ba1145ff.mjs",
+    "file": "entry-6c67fafc.mjs",
     "src": "node_modules/nuxt/dist/app/entry.mjs",
     "isEntry": true,
     "dynamicImports": [
@@ -12,11 +12,11 @@
       "pages/pieces/[piece].vue"
     ],
     "css": [
-      "entry.9f88f4ea.css"
+      "entry.dc14d2f9.css"
     ]
   },
   "pages/clinamen.vue": {
-    "file": "clinamen-f99899a9.mjs",
+    "file": "clinamen-43773f9e.mjs",
     "src": "pages/clinamen.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -27,7 +27,7 @@
     ]
   },
   "pages/index.vue": {
-    "file": "index-24d28a08.mjs",
+    "file": "index-5ef3602d.mjs",
     "src": "pages/index.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -42,7 +42,7 @@
     "file": "index-596cb1b2.mjs"
   },
   "pages/nuggets/index.vue": {
-    "file": "index-d73dccf2.mjs",
+    "file": "index-3eb6e26a.mjs",
     "src": "pages/nuggets/index.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -50,7 +50,7 @@
     ]
   },
   "pages/pieces/[piece].vue": {
-    "file": "_piece_-c4e0df19.mjs",
+    "file": "_piece_-c85b0bf4.mjs",
     "src": "pages/pieces/[piece].vue",
     "isDynamicEntry": true,
     "imports": [
@@ -62,7 +62,7 @@
     ]
   },
   "src/pieces/circle-collision/index.ts": {
-    "file": "index-55c326b9.mjs",
+    "file": "index-e1ff208d.mjs",
     "src": "src/pieces/circle-collision/index.ts",
     "isDynamicEntry": true,
     "imports": [
