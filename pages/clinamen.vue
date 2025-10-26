@@ -1,0 +1,71 @@
+<template>
+  <div>
+    <div class="absolute w-[100vw] h-[100vh] text-white flex flex-col items-center text-center
+      justify-center transition-opacity ease-out duration-[5s] opacity-100 text-lg px-4"
+      :class="{ 'opacity-0': started, 'bg-black': displayQuote, 'bg-neutral-900': !displayQuote }">
+
+      <div v-if="displayQuote" class="text-xl text-right">
+        <p>
+          "The nature of the universe consists not in things that are free from death, but in things that are constantly
+          changing."
+        </p>
+        <p class="text-right font-bold mt-4">― Lucretius.</p>
+      </div>
+      <div v-else class="leading-8">
+        <p>This work is an independent homage to the installation "Clinamen" by the French artist <b>Céleste
+            Boursier-Mougenot</b>.
+        </p>
+        <div class="flex flex-col items-center m-10">
+          <svg class="w-20" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision"
+            text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd"
+            clip-rule="evenodd" viewBox="0 0 512 512">
+            <path fill="white" fill-rule="nonzero"
+              d="M256.001 0c70.413 0 134.42 28.798 180.811 75.188C483.204 121.58 512 185.588 512 256.001c0 70.413-28.796 134.419-75.188 180.811C390.421 483.204 326.414 512 256.001 512c-70.413 0-134.421-28.796-180.812-75.188C28.798 390.42 0 326.414 0 256.001 0 185.585 28.797 121.58 75.189 75.188 121.58 28.796 185.585 0 256.001 0zm-93.899 256.595v-11.907c0-25.831 10.565-49.311 27.576-66.321 17.01-17.012 40.492-27.576 66.32-27.576 25.831 0 49.311 10.564 66.321 27.576 17.015 17.015 27.577 40.492 27.577 66.321v11.907c22.92.638 41.309 19.415 41.309 42.489 0 23.476-19.031 42.508-42.507 42.508-18.184 0-24.292-3.582-24.292-19.737v-36.628c0-13.687-.947-22.235 7.441-26.144v-14.395c0-20.847-8.538-39.811-22.289-53.561-13.749-13.75-32.71-22.285-53.557-22.285-20.849 0-39.813 8.535-53.563 22.285s-22.286 32.711-22.286 53.561v14.35c7.875 3.65 7.44 11.508 7.44 24.551v39.897c0 15.229-8.286 18.106-24.292 18.106-23.474 0-42.506-19.032-42.506-42.508 0-23.074 18.388-41.851 41.308-42.489zM416.009 95.991c-41.073-41.073-97.715-66.57-160.008-66.57-62.294 0-118.937 25.496-160.01 66.57-41.074 41.073-66.569 97.716-66.569 160.01 0 62.293 25.496 118.935 66.569 160.008 41.073 41.075 97.717 66.57 160.01 66.57 62.293 0 118.935-25.495 160.008-66.57 41.075-41.073 66.57-97.715 66.57-160.008 0-62.293-25.495-118.937-66.57-160.01z" />
+          </svg>
+          <p class="mt-10">
+            Wearing headphones is recommended for an immersive experience.
+          </p>
+        </div>
+
+        <button @click="onStart" class="mt-16 text-center border-2 rounded-xl p-4 font-bold">Start experience</button>
+      </div>
+      <span class="absolute bottom-5 text-sm text-stone-200">Created by João Filipe Dalla Rosa</span>
+
+    </div>
+    <div class="max-w-full" :class="`w-[100vw] h-[100vh]`" ref="canvas"></div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from "vue";
+const canvas = ref(null);
+const started = ref(false);
+const displayQuote = ref(false);
+
+if (process.client) {
+  const { default: piece } = await import("~/src/pieces/circle-collision/");
+  onMounted(() => {
+    piece.mount(canvas.value);
+  });
+  onUnmounted(() => {
+    piece.remove(canvas.value);
+  });
+}
+
+function onStart() {
+  displayQuote.value = true;
+  setTimeout(() => {
+    started.value = true;
+  }, 8000);
+}
+</script>
+
+<style>
+canvas {
+  @apply border;
+  @apply border-black;
+  max-width: 100%;
+  /* border: 1px solid black; */
+  visibility: visible !important;
+}
+</style>

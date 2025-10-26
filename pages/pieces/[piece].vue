@@ -53,7 +53,6 @@ if (process.client) {
   title = pieceTitle;
   description = pieceDescription;
   instructions = pieceInstructions;
-  // console.log("ALOU", window.innerWidth);
   if (window.innerWidth < CANVAS_SIZE || window.innerHeight < CANVAS_SIZE) {
     canvasSize.value = Math.min(window.innerWidth, window.innerHeight);
     console.log("Recalculate size...", canvasSize);
