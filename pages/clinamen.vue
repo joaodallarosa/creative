@@ -1,7 +1,7 @@
 <template>
   <div class="clinamen">
     <div class="absolute w-[100vw] h-[100dvh] text-white flex flex-col items-center text-center
-      justify-center transition-opacity ease-out duration-[5s] opacity-100 text-lg px-4"
+      justify-center transition-opacity ease-out duration-[5s] opacity-100 text-lg px-4 select-none"
       :class="{ 'opacity-0': started, 'bg-black': displayQuote, 'bg-neutral-900': !displayQuote }">
 
       <div v-if="displayQuote" class="text-xl text-right">
