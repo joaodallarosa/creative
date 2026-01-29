@@ -1,6 +1,7 @@
 import { P5I } from "p5i";
 import * as Tone from "tone";
 import { ForceZone } from "./classes/force-zone";
+import { drawArrow } from "~~/src/utils/draw-arrow";
 
 // avoid importing p5 directly — use the injected `sketch` and the client global window.p5
 type Vector = any;
@@ -43,6 +44,7 @@ export default (sketch: P5I) => {
   let forceZones = [];
   let plateImg;
   let playerIndex = 0;
+  let devMode = false;
   let audioStarted = false;
   let plateSounds = [
     "/creative/audio/chime_1.wav",
@@ -67,7 +69,7 @@ export default (sketch: P5I) => {
     // Create a small pool of named players (hit0..hitN) so each collision can
     // start and play to completion without cutting other voices.
     try {
-      // create a master limiter to avoid clipping when many voices overlap
+      // avoid clipping when many voices overlap
       _limiter = new Tone.Limiter(-1).toDestination();
       const map: Record<string, string> = {};
       for (let i = 0; i < PLAYERS_POOL; i++) {
@@ -119,7 +121,7 @@ export default (sketch: P5I) => {
         force: createVector(0, zoneForce * -1),
         height: CANVAS_HEIGHT,
         width: CANVAS_WIDTH / 3,
-      })
+      }),
     );
     forceZones.push(
       new ForceZone({
@@ -127,7 +129,7 @@ export default (sketch: P5I) => {
         force: createVector(zoneForce, 0),
         height: CANVAS_HEIGHT / 4,
         width: CANVAS_WIDTH / 2,
-      })
+      }),
     );
     forceZones.push(
       new ForceZone({
@@ -135,18 +137,18 @@ export default (sketch: P5I) => {
         force: createVector(zoneForce * -1, 0),
         height: CANVAS_HEIGHT / 4,
         width: CANVAS_WIDTH / 2,
-      })
+      }),
     );
     forceZones.push(
       new ForceZone({
         position: createVector(
           CANVAS_WIDTH / 2,
-          CANVAS_HEIGHT - CANVAS_HEIGHT / 4
+          CANVAS_HEIGHT - CANVAS_HEIGHT / 4,
         ),
         force: createVector(zoneForce * -1, 0),
         height: CANVAS_HEIGHT / 4,
         width: CANVAS_WIDTH / 2,
-      })
+      }),
     );
     forceZones.push(
       new ForceZone({
@@ -154,7 +156,7 @@ export default (sketch: P5I) => {
         force: createVector(zoneForce, 0),
         height: CANVAS_HEIGHT / 4,
         width: CANVAS_WIDTH / 2,
-      })
+      }),
     );
     forceZones.push(
       new ForceZone({
@@ -162,7 +164,7 @@ export default (sketch: P5I) => {
         force: createVector(0, zoneForce),
         height: CANVAS_HEIGHT,
         width: CANVAS_WIDTH / 3,
-      })
+      }),
     );
     forceZones.push(
       new ForceZone({
@@ -170,7 +172,7 @@ export default (sketch: P5I) => {
         force: createVector(0, zoneForce),
         height: CANVAS_HEIGHT,
         width: CANVAS_WIDTH / 3,
-      })
+      }),
     );
   }
 
@@ -179,6 +181,13 @@ export default (sketch: P5I) => {
     CANVAS_WIDTH = vpWidth();
     resizeCanvas(CANVAS_WIDTH, CANVAS_HEIGHT, true);
   }
+
+  const keyPressed = () => {
+    if (sketch.keyCode === 68) {
+      // D
+      devMode = !devMode;
+    }
+  };
 
   // iOS Safari fires visualViewport resize when the URL bar shows/hides or on zoom
   const setup = ({ pixelDensity, createCanvas, fullscreen }) => {
@@ -193,29 +202,38 @@ export default (sketch: P5I) => {
     zonesSetup();
     for (let i = 0; i < platesCount; i++) {
       particles.push(
-        new Particle(random(0, CANVAS_WIDTH), random(0, CANVAS_HEIGHT))
+        new Particle(random(0, CANVAS_WIDTH), random(0, CANVAS_HEIGHT)),
       );
     }
   };
 
   const draw = ({ background, fill, rect, drawingContext, ellipse }) => {
-    background(45, 136, 155);
+    if (devMode) {
+      background(255, 255, 255);
+    } else {
+      background(45, 136, 155);
+    }
     forceZones.forEach((zone) => {
-      // zone.draw({ push, pop, stroke, rect, fill });
+      /** Draw force zones */
+      if (devMode) {
+        zone.draw({ push, pop, stroke, rect, fill });
+      }
       zone.applyForce(particles);
     });
 
     /** Draw Shadows */
-    for (let i = 0; i < particles.length; i++) {
-      let a = particles[i];
-      push();
-      drawingContext.shadowOffsetX = 35;
-      drawingContext.shadowOffsetY = -25;
-      drawingContext.shadowBlur = 40;
-      drawingContext.shadowColor = "rgb(0 0 0 / 30%)";
-      fill(0);
-      circle(a.position.x, a.position.y, a.r * 1.5);
-      pop();
+    if (!devMode) {
+      for (let i = 0; i < particles.length; i++) {
+        let a = particles[i];
+        push();
+        drawingContext.shadowOffsetX = 35;
+        drawingContext.shadowOffsetY = -25;
+        drawingContext.shadowBlur = 40;
+        drawingContext.shadowColor = "rgb(0 0 0 / 30%)";
+        fill(0);
+        circle(a.position.x, a.position.y, a.r * 1.5);
+        pop();
+      }
     }
 
     /** Check Collision */
@@ -343,19 +361,32 @@ export default (sketch: P5I) => {
 
     // Method to display
     show() {
-      stroke(247, 240, 252);
+      if (devMode) {
+        stroke(0);
+      } else {
+        stroke(247, 240, 252);
+      }
       strokeWeight(1);
       fill(255, 255, 255, 0);
-      image(
-        plateImg,
-        this.position.x - this.r,
-        this.position.y - this.r,
-        this.r * 2,
-        this.r * 2
-      );
+      if (!devMode) {
+        image(
+          plateImg,
+          this.position.x - this.r,
+          this.position.y - this.r,
+          this.r * 2,
+          this.r * 2,
+        );
+      }
       circle(this.position.x, this.position.y, this.r * 2);
+
+      if (devMode) {
+        const test = createVector(this.position.x, this.position.y);
+        test.mult(this.velocity);
+        test.mult(0.4);
+        drawArrow(this.position, test, [255, 0, 0], sketch);
+      }
     }
   }
 
-  return { setup, draw, mousePressed, preload, windowResized };
+  return { setup, draw, mousePressed, preload, windowResized, keyPressed };
 };
